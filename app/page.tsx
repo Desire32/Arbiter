@@ -7,7 +7,7 @@ export default function Home() {
         <div>
             <div className={styles["background-image"]}>
                 <Image
-                    src="/uni_background.jpg"
+                    src="/images/uni_background.jpg"
                     alt="background image"
                     fill  
                     style={{ objectFit: "cover" }}
@@ -17,7 +17,7 @@ export default function Home() {
             <main className={styles["main-container"]}>
                 <div className={styles["content-container"]}>
                     <div className={styles["header-container"]}>
-                        <Image src="/app_logo-removebg-preview.png" alt="logo" width={60} height={60}/>
+                        <Image src="/images/app_logo-removebg-preview.png" alt="logo" width={60} height={60}/>
                         <p className={styles["logo-text"]}>Arbiter</p>
                     </div>
                     <div className={styles["description-container"]}>
@@ -28,9 +28,16 @@ export default function Home() {
                         </div>
                     </div>
                     <div className={styles["button-container"]}>
-                        <Link href='/geo.html'>
+                        <Link href='/content/geo.html'>
                             <div className={styles["start-button"]}>
                                 GEO
+                            </div>
+                        </Link>
+                    </div>
+                    <div className={styles["button-container"]}>
+                        <Link href='/content/marker.html'>
+                            <div className={styles["start-button"]}>
+                                MARKER
                             </div>
                         </Link>
                     </div>
