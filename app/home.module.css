@@ -7,8 +7,22 @@
     height: 100%;
     z-index: -1;
     opacity: 0.85;
-    filter: blur(5px); 
+    filter: blur(5px);
 }
+
+.section {
+    position: relative; 
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    background-color: transparent;  
+    overflow: hidden;
+}
+
 
 .main-container {
     height: 100vh;
@@ -32,16 +46,6 @@
     gap: 2rem;
 }
 
-.section {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 2rem;
-    position: relative;
-}
 
 .header-container {
     display: flex;
