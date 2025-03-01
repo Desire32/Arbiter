@@ -50,15 +50,18 @@ export default function Home() {
         </div>
       </div>
         <div className={styles["description-container"]}>
-          <p className={styles["description-text"]}>What can it do?</p>
-          <p className={styles["description-text"]}>Some description</p>
+          <p className={styles["logo-text"]}>What can it do?</p>
+          <p className={styles["description-text"]}>
+          Arbiter is your new AR assistant for university. It makes life on campus easier and more fun. With augmented reality, you can scan markers and instantly get important info — whether it is your schedule, the location of classrooms, or even 3D models. Lost? No problem, just open the app and it will show you the way to your destination. It is simple, intuitive, and hassle-free. Get the most out of your studies and campus navigation, staying one step ahead!
+          </p>
         </div>
-        <div className={styles["button-container"]}>
-          <Link href='/content/geo.html'>
-            {/* <div className={styles["start-button"]}>
-              Let start
-            </div> */}
-          </Link>
+        <div className={styles["header-container"]}>
+          <Image
+            src="/images/robot_no_background.png"
+            alt="logo"
+            width={400}
+            height={400}
+          />
         </div>
         <div className={styles["arrow-container"]}>
           <span className={styles.arrow}>↓</span>
@@ -78,17 +81,19 @@ export default function Home() {
         </div>
       </div>
         <div className={styles["description-container"]}>
-          <p className={styles["description-text"]}>What was the purpose of Arbiter?</p>
-          <p className={styles["description-text"]}>Some description</p>
+          <p className={styles["logo-text"]}>What was the purpose of Arbiter?</p>
+          <p className={styles["description-text"]}>
+          Arbiter was created to help people with disabilities navigate the campus and access important information more easily. The goal was to make the university more accessible and user-friendly, so that everyone could find their way around and get the information they need with minimal effort. With the app’s augmented reality features, people with disabilities can quickly and easily get assistance with navigation, as well as access schedules, 3D models, and other resources. All you need to do is point the camera, and the information will be right there on your screen.</p>
         </div>
         <div className={styles["button-container"]}>
           <Link href='/content/marker.html'>
             <div className={styles["start-button"]}>
-              Let start
+              Let start!
             </div>
           </Link>
         </div>
       </section>
+      
     {/* About Section */}
     <div className={styles["about-section"]}>
       <h2>About Us</h2>
