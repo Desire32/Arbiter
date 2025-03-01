@@ -26,9 +26,9 @@ bun dev
 ## Authors
 | Name          | Role                                      |
 |-------------------|----------------------------------------------|
-| Nikita Markov | "" |
-| Sergey Parenkov   | "" |
-| Maxim Zharkov     | ""  |
+| Nikita Markov | "Team Lead" |
+| Sergey Parenkov   | "CI/CD Tester" |
+| Maxim Zharkov     | "Graphical Designer"  |
 
 ## Our stack
 
