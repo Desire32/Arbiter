@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/styles/home.arr.css">
+    <link rel="stylesheet" href="./styles/home.ar.css">
+    <link rel="stylesheet" href="./styles/home.menu.css">
     <title>ARbiter</title>
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-look-at-component@1.0.0/dist/aframe-look-at-component.min.js"></script>
@@ -11,82 +12,120 @@
   </head>
 
   <body>
-    <!-- Scene for GPS Text -->
-    <a-scene id="scene-gps-text" vr-mode-ui="enabled: false" arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;">
-      <a-text
-        id="gps-text"
-        value="This content will always face you."
-        look-at="[gps-camera]"
-        scale="120 120 120"
-        gps-entity-place="latitude: 35.008307; longitude: 33.697416;"
-      ></a-text>
-      <a-camera id="gps-camera" gps-camera rotation-reader></a-camera>
-    </a-scene>
-
-    <!-- Scene for Marker-based AR (3D Model) -->
-    <a-scene id="scene-marker" embedded arjs>
-      <a-marker preset="hiro">
-        <a-entity
-          position="0 0 0"
-          scale="0.05 0.05 0.05"
-          gltf-model="https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
-        ></a-entity>
-      </a-marker>
-      <a-entity camera></a-entity>
-    </a-scene>
-
-    <!-- Scene for Map (University Map) -->
-    <a-scene id="scene-map" embedded arjs>
-      <a-image
-        // map
-        position="0 0 -5"
-        scale="10 10 1"
-      ></a-image>
-      <a-entity camera></a-entity>
-    </a-scene>
-
-    <div class="button-container">
-      <button class="button" onclick="toggleScene('gps')">Show GPS Text</button>
-      <button class="button" onclick="toggleScene('marker')">Show 3D Model</button>
-      <button class="button" onclick="toggleScene('map')">Show University Map</button>
-      <button class="button" onclick="toggleQRContainer()">Instructions</button>
-    </div>
-
-    <div class="qr-container" id="qr-container">
-      <h3>Scan a QR Code:</h3>
-      <p>Hey! Scan these QR codes to access different features of the app:</p>
-      <div>
-        <img src="qr-codes/gps-qr.png" alt="GPS QR Code" />
-        <img src="qr-codes/marker-qr.png" alt="Marker QR Code" />
-        <img src="qr-codes/map-qr.png" alt="Map QR Code" />
+    <div class="container">
+      <div class="menu-button-container">
+        <button class="menu-button" onclick="toggleMenu()">☰ Menu</button>
       </div>
+
+      <div class="menu" id="menu" style="display: none;">
+        <ul>
+          <li><button class="menu-item" onclick="showDescription('marker')">Marker Tracker</button></li>
+          <li><button class="menu-item" onclick="showDescription('geo')">Geolocation</button></li>
+          <li><button class="menu-item" onclick="showDescription('map')">Show Map</button></li>
+        </ul>
+      </div>
+
+      <div class="description-popup" id="description-popup" style="display: none;">
+        <h3 id="popup-title">Description</h3>
+        <p id="popup-description">This is a description.</p>
+        <button class="back-button" onclick="goBack()">Back</button>
+        <button class="proceed-button" id="proceed-button" style="display: none;" onclick="proceed()">Proceed</button>
+      </div>
+
+      <a-scene id="scene-gps-text" vr-mode-ui="enabled: false" arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;" style="display: none;">
+        <a-text
+          id="gps-text"
+          value="This content will always face you."
+          look-at="[gps-camera]"
+          scale="120 120 120"
+          gps-entity-place="latitude: 35.008307; longitude: 33.697416;"
+        ></a-text>
+        <a-camera id="gps-camera" gps-camera rotation-reader></a-camera>
+      </a-scene>
+
+      <!-- Scene for Marker-based AR (3D Model) -->
+      <a-scene id="scene-marker" embedded arjs style="display: none;">
+        <a-marker preset="hiro">
+          <a-entity
+            position="0 0 0"
+            scale="0.05 0.05 0.05"
+            gltf-model="https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
+          ></a-entity>
+        </a-marker>
+        <a-entity camera></a-entity>
+      </a-scene>
+
+      <!-- Scene for Map (University Map) -->
+      <a-scene id="scene-map" embedded arjs style="display: none;">
+        <a-image
+          // map
+          position="0 0 -5"
+          scale="10 10 1"
+        ></a-image>
+        <a-entity camera></a-entity>
+      </a-scene>
     </div>
 
     <script>
-      document.getElementById('scene-gps-text').style.display = 'none';
-      document.getElementById('scene-marker').style.display = 'none';
-      document.getElementById('scene-map').style.display = 'none';
+      function toggleMenu() {
+        const menu = document.getElementById('menu');
+        menu.style.display = (menu.style.display === 'none') ? 'block' : 'none';
+      }
 
-      function toggleScene(scene) {
-        document.getElementById('scene-gps-text').style.display = 'none';
-        document.getElementById('scene-marker').style.display = 'none';
-        document.getElementById('scene-map').style.display = 'none';
-        
-        if (scene === 'gps') {
-          document.getElementById('scene-gps-text').style.display = 'block';
-        } else if (scene === 'marker') {
-          document.getElementById('scene-marker').style.display = 'block';
-        } else if (scene === 'map') {
-          document.getElementById('scene-map').style.display = 'block';
+      function showDescription(type) {
+        const descriptionPopup = document.getElementById('description-popup');
+        const popupTitle = document.getElementById('popup-title');
+        const popupDescription = document.getElementById('popup-description');
+        const proceedButton = document.getElementById('proceed-button');
+
+        descriptionPopup.style.display = 'block';
+
+        if (type === 'marker') {
+          popupTitle.textContent = 'Marker Tracker';
+          popupDescription.textContent = 'With Marker Tracker, you can scan QR codes or markers and see interactive content.';
+          proceedButton.style.display = 'block';
+        } else if (type === 'geo') {
+          popupTitle.textContent = 'Geolocation';
+          popupDescription.textContent = 'Geolocation allows you to view content based on your geographical location.';
+          proceedButton.style.display = 'none';
+        } else if (type === 'map') {
+          popupTitle.textContent = 'Show Map';
+          popupDescription.textContent = 'The Show Map feature will display the university map to help you navigate.';
+          proceedButton.style.display = 'none';
         }
       }
-
-      function toggleQRContainer() {
-        const qrContainer = document.getElementById('qr-container');
-        qrContainer.style.display = qrContainer.style.display === 'none' ? 'block' : 'none';
+      function goBack() {
+        document.getElementById('description-popup').style.display = 'none';
+      }
+      function proceed() {
+        alert('Proceeding with the selected option!');
+        document.getElementById('description-popup').style.display = 'none';
       }
 
-      toggleScene('gps');
+      function switchScene(sceneId) {
+        const scenes = ['scene-gps-text', 'scene-marker', 'scene-map'];
+        scenes.forEach((id) => {
+          const scene = document.getElementById(id);
+          if (scene) scene.style.display = 'none';
+        });
+        const scene = document.getElementById(sceneId);
+        if (scene) scene.style.display = 'block';
+      }
+
+      function showDescription(type) {
+        switch (type) {
+          case 'marker':
+            switchScene('scene-marker');
+            break;
+          case 'geo':
+            switchScene('scene-gps-text');
+            break;
+          case 'map':
+            switchScene('scene-map');
+            break;
+        }
+        document.getElementById('description-popup').style.display = 'block';
+      }
     </script>
   </body>
 </html>
