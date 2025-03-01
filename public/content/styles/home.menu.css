@@ -1,5 +1,5 @@
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Cabin', sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f0f0f0;
@@ -10,17 +10,35 @@ body {
 }
 
 .menu-container {
-    position: relative;
-    width: 80%;
-    max-width: 600px;
+    z-index: 9999;
+    position: fixed; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 250px;
     padding: 20px;
-    background-color: #fff;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 15px;
     overflow: hidden;
     transition: transform 0.3s ease-in-out;
 }
 
+
+.menu-button {
+    z-index: 9999;
+    background: none;
+    border: none;
+    top: 20px;
+  right: 20px;
+  position: fixed;
+    padding: 0;
+    cursor: pointer;
+  }
+  
+.menu-icon {
+    width: 60px;
+    height: 60px;
+}
 .menu-button-container {
     display: flex;
     justify-content: center;
@@ -29,7 +47,6 @@ body {
 .menu-button {
     font-size: 28px;
     padding: 12px;
-    background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 8px;
@@ -38,7 +55,7 @@ body {
 }
 
 .menu-button:hover {
-    background-color: #45a049;
+    background-color: #d8e8d9;
     transform: scale(1.05);
 }
 
@@ -52,7 +69,7 @@ body {
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
     margin-top: 20px;
-    padding: 15px;
+    padding: 20px;
 }
 
 .menu ul {
@@ -64,8 +81,9 @@ body {
 .menu-item {
     display: block;
     width: 100%;
-    padding: 12px;
-    background-color: #4CAF50;
+    padding: 10px;
+    font-size: 1rem;
+    background-color: #c87c09;
     color: white;
     border: none;
     border-radius: 8px;
@@ -76,7 +94,7 @@ body {
 }
 
 .menu-item:hover {
-    background-color: #45a049;
+    background-color: #e01b01;
     transform: scale(1.05);
 }
 
@@ -109,27 +127,6 @@ body {
     font-size: 16px;
     margin-bottom: 20px;
     color: #555;
-}
-
-.back-button, .proceed-button {
-    padding: 12px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    width: 100%;
-    margin-top: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.1s ease;
-}
-
-.back-button:hover, .proceed-button:hover {
-    background-color: #45a049;
-    transform: scale(1.05);
-}
-
-.back-button:active, .proceed-button:active {
-    transform: scale(0.98);
 }
 
 @keyframes fadeIn {
