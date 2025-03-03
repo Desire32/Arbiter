@@ -1,21 +1,47 @@
-body {
-    font-family: 'Cabin', sans-serif;
+html, body {
+    height: 100%;
     margin: 0;
     padding: 0;
-    background-color: #f0f0f0;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-}
-
-@keyframes fadeIn {
+    background-color: #f0f0f0;
+    font-family: 'Cabin', sans-serif;
+  }
+  
+  @keyframes fadeIn {
     from {
-        opacity: 0;
+      opacity: 0;
     }
     to {
-        opacity: 1;
+      opacity: 1;
     }
-}
-
-/* 390x370 */
+  }
+  
+  .fade-in-element {
+    animation: fadeIn 2s ease-in;
+  }
+  
+  @keyframes changeBackgroundColor {
+    from {
+      background-color: white;
+    }
+    to {
+      background-color: #f0f0f0;
+    }
+  }
+  
+  body {
+    animation: changeBackgroundColor 1.5s ease-in-out;
+  }
+  
+  @media (max-width: 768px) {
+    body {
+      font-size: 14px;
+    }
+  
+    .ui-container {
+      flex-direction: column;
+    }
+  }
+  
