@@ -11,7 +11,7 @@ export default function Home() {
       <div>
         <div className={styles["background-image"]}>
           <Image
-            src="/images/preholders/uni_1.jpg"
+            src="/images/uni_1.jpg"
             alt="background image"
             fill
             style={{ objectFit: "cover" }}
@@ -20,7 +20,7 @@ export default function Home() {
       </div>
         <div className={styles["header-container"]}>
           <Image
-            src="/images/preholders/app_logo-removebg-preview.png"
+            src="/images/app_logo-removebg-preview.png"
             alt="logo"
             width={150}
             height={150}
@@ -42,7 +42,7 @@ export default function Home() {
       <div>
         <div className={styles["background-image"]}>
           <Image
-            src="/images/preholders/uni_2.jpg"
+            src="/images/uni_2.jpg"
             alt="background image"
             fill
             style={{ objectFit: "cover" }}
@@ -57,7 +57,7 @@ export default function Home() {
         </div>
         <div className={styles["header-container"]}>
           <Image
-            src="/images/preholders/robot_no_background.png"
+            src="/images/robot_no_background.png"
             alt="logo"
             width={400}
             height={400}
@@ -73,7 +73,7 @@ export default function Home() {
       <div>
         <div className={styles["background-image"]}>
           <Image
-            src="/images/preholders/students.jpg"
+            src="/images/students.jpg"
             alt="background image"
             fill
             style={{ objectFit: "cover" }}

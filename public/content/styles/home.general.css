@@ -5,7 +5,7 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f0f0f0;
+    background-color: transparent;
     font-family: 'Cabin', sans-serif;
   }
   
@@ -20,15 +20,6 @@ html, body {
   
   .fade-in-element {
     animation: fadeIn 2s ease-in;
-  }
-  
-  @keyframes changeBackgroundColor {
-    from {
-      background-color: white;
-    }
-    to {
-      background-color: #f0f0f0;
-    }
   }
   
   body {
