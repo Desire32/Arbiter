@@ -86,7 +86,7 @@ export default function Home() {
           Arbiter was created to help people with disabilities navigate the campus and access important information more easily. The goal was to make the university more accessible and user-friendly, so that everyone could find their way around and get the information they need with minimal effort. With the app is augmented reality features, people with disabilities can quickly and easily get assistance with navigation, as well as access schedules, 3D models, and other resources. All you need to do is point the camera, and the information will be right there on your screen.</p>
         </div>
         <div className={styles["button-container"]}>
-          <Link href='/content/ar.html'>
+          <Link href='/content/test-material.html'>
             <div className={styles["start-button"]}>
               Let start!
             </div>
