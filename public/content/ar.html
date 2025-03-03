@@ -4,7 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/home.ar.css">
-    <link rel="stylesheet" href="./styles/home.menu.css">
+    <link rel="stylesheet" href="./styles/home.button.css">
+    <link rel="stylesheet" href="./styles/home.general.css">
+    <link rel="stylesheet" href="./styles/home.help-menu.css">
     <title>ARbiter</title>
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-look-at-component@1.0.0/dist/aframe-look-at-component.min.js"></script>
@@ -13,59 +15,48 @@
 
   <body>
 
-    <div class="menu-button-container">
-      <button class="menu-button" onclick="toggleMenu()">
-        <img src="../images/menu.png" alt="Menu" class="menu-icon" />
-      </button>
-    </div>
-    
-    <div class="menu-container">
-      <div class="menu" id="menu" style="display: none;">
-        <ul>
-          <li><button class="menu-item">Marker Tracker</button></li>
-          <li><button class="menu-item">Geolocation</button></li>
-          <li><button class="menu-item">Show Map</button></li>
-        </ul>
+    <div class="ui-container">
+      <!-- Map Button -->
+      <div class="ui-button-container">
+        <button class="ui-button" onclick="toggleMapMenu()">
+          <img src="../images/map.png" alt="Map" class="map-icon" />
+        </button>
+      </div>
+      <!-- Help Button -->
+      <div class="ui-button-container">
+        <button class="ui-button" onclick="toggleHelpMenu()">
+          <img src="../images/question.png" alt="Help" class="question-icon" />
+        </button>
       </div>
     </div>
 
-<!-- tests -->
-    <a-scene>
-      <a-entity camera></a-entity>
-    </a-scene>
+    <!-- Help menu -->
+    <div class="help-container" id="help-container">
+      <div class="front-image-container">
+        <img src="../images/app_logo-removebg-preview.png" alt="App Logo" class="app-logo" />
+      </div>
+      <div class="help-info-container">
+        <h3>Welcome to the App</h3>
+        <p>Here is some helpful information to guide you through the app. You can navigate through the different sections easily and get the best out of the features available!</p>
+      </div>
+      <div class="back-button-container">
+        <button class="back-button" onclick="closeHelpMenu()">Close</button>
+      </div>
+    </div>
 
-      <!-- <a-scene id="scene-gps-text" vr-mode-ui="enabled: false" arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;" style="display: none;">
-        <a-text
-          id="gps-text"
-          value="This content will always face you."
-          look-at="[gps-camera]"
-          scale="120 120 120"
-          gps-entity-place="latitude: 35.008307; longitude: 33.697416;"
-        ></a-text>
-        <a-camera id="gps-camera" gps-camera rotation-reader></a-camera>
-      </a-scene> -->
+    <script>
+      function toggleMapMenu() {
+        console.log("ed!");
+      }
+      function toggleHelpMenu() {
+        const helpContainer = document.getElementById('help-container');
+        helpContainer.style.display = (helpContainer.style.display === 'block') ? 'none' : 'block';
+      }
+      function closeHelpMenu() {
+        const helpContainer = document.getElementById('help-container');
+        helpContainer.style.display = 'none';
+      }
+    </script>
 
-      <!-- Scene for Marker-based AR (3D Model) -->
-      <!-- <a-scene id="scene-marker" embedded arjs style="display: none;">
-        <a-marker preset="hiro">
-          <a-entity
-            position="0 0 0"
-            scale="0.05 0.05 0.05"
-            gltf-model="https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
-          ></a-entity>
-        </a-marker>
-        <a-entity camera></a-entity>
-      </a-scene> -->
-
-      <!-- Scene for Map (University Map) -->
-      <!-- <a-scene id="scene-map" embedded arjs style="display: none;">
-        <a-image
-          // map
-          position="0 0 -5"
-          scale="10 10 1"
-        ></a-image>
-        <a-entity camera></a-entity> -->
-      <!-- </a-scene> -->
-      <script src="./ar.js"></script>
   </body>
 </html>
