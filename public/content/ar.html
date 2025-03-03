@@ -3,8 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/home.ar.css">
     <link rel="stylesheet" href="./styles/home.button.css">
     <link rel="stylesheet" href="./styles/home.general.css">
+    <link rel="stylesheet" href="./styles/home.map.css">
     <link rel="stylesheet" href="./styles/home.help-menu.css">
     <title>ARbiter</title>
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
@@ -13,15 +15,12 @@
   </head>
 
   <body>
-
     <div class="ui-container">
-      <!-- Map Button -->
       <div class="ui-button-container">
-        <button class="ui-button" onclick="toggleMapMenu()">
+        <button class="ui-button" onclick="toggleMap()">
           <img src="../images/map.png" alt="Map" class="map-icon" />
         </button>
       </div>
-      <!-- Help Button -->
       <div class="ui-button-container">
         <button class="ui-button" onclick="toggleHelpMenu()">
           <img src="../images/question.png" alt="Help" class="question-icon" />
@@ -43,19 +42,55 @@
       </div>
     </div>
 
-    <script>
-      function toggleMapMenu() {
-        console.log("ed!");
-      }
-      function toggleHelpMenu() {
-        const helpContainer = document.getElementById('help-container');
-        helpContainer.style.display = (helpContainer.style.display === 'block') ? 'none' : 'block';
-      }
-      function closeHelpMenu() {
-        const helpContainer = document.getElementById('help-container');
-        helpContainer.style.display = 'none';
-      }
-    </script>
+    <!-- 2D Map Section -->
+<div class="map-container" id="map-container">
+  <!-- First Floor -->
+  <div class="first-floor-container">
+    <img src="../images/gray.jpg" id="map" alt="University Map" />
+    <div class="marker" style="top: 30%; left: 25%;" onclick="openPopup('building1')">🏫</div>
+    <div class="marker" style="top: 50%; left: 60%;" onclick="openPopup('library')">📚</div>
+    <div class="marker" style="top: 20%; left: 80%;" onclick="openPopup('cafeteria')">🍽️</div>
+    <div class="marker" style="top: 70%; left: 40%;" onclick="openPopup('gym')">🏋️‍♂️</div>
+    <div class="marker" style="top: 80%; left: 10%;" onclick="openPopup('office')">🏢</div>
+  </div>
+
+  <!-- Second Floor -->
+  <div class="second-floor-container">
+    <img src="../images/gray.jpg" id="map" alt="University Map" />
+    <div class="marker" style="top: 30%; left: 20%;" onclick="openPopup('lecture-hall')">🎓</div>
+    <div class="marker" style="top: 50%; left: 70%;" onclick="openPopup('lab')">🔬</div>
+    <div class="marker" style="top: 60%; left: 40%;" onclick="openPopup('conference-room')">🖥️</div>
+    <div class="marker" style="top: 10%; left: 50%;" onclick="openPopup('study-area')">📖</div>
+    <div class="marker" style="top: 80%; left: 80%;" onclick="openPopup('toilets')">🚻</div>
+  </div>
+
+  <!-- Navigation Controls -->
+  <div class="navigation-controls">
+    <button class="back-button" onclick="closeMap()">Back</button>
+    <div class="floor-switch">
+      <button onclick="showFloor(1)">1</button>
+      <button onclick="showFloor(2)">2</button>
+    </div>
+  </div>
+</div>
+
+<!-- Popup Section -->
+<div class="popup" id="popup" style="display: none;">
+  <div class="popup-content">
+    <h2 id="popup-title">Information</h2>
+    <p id="popup-description">Details about the location...</p>
+    <button onclick="closePopup()">Close</button>
+  </div>
+</div>
+
+    <div class="popup" id="popup">
+      <h3 id="popup-title"></h3>
+      <p id="popup-description"></p>
+      <button onclick="closePopup()">Close</button>
+    </div>
+
+    <script src="./map.js"></script>
+    <script src="./help.js"></script>
 
   </body>
 </html>
