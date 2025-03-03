@@ -19,3 +19,4 @@ function toggleMenu() {
     const scene = document.getElementById(sceneId);
     if (scene) scene.style.display = 'block';
   }
+
