@@ -1,133 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styles/home.ar.css">
-    <link rel="stylesheet" href="./styles/home.button.css">
-    <link rel="stylesheet" href="./styles/home.general.css">
-    <link rel="stylesheet" href="./styles/home.map.css">
-    <link rel="stylesheet" href="./styles/home.help-menu.css">
-    <title>ARbiter</title>
-    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-look-at-component@1.0.0/dist/aframe-look-at-component.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
 
-  </head>
+<head>
+    <title>Basic Scene with WebXR</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link type="text/css" rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.js" crossorigin="anonymous"></script>
+</head>
 
-  <style>
-    body{
-      margin: 0;
-    }
-    canvas{
-      background-color: transparent;
-    }
-  </style>
+<body>
+    <button id="toggleMap" style="position: absolute; top: 10px; left: 10px; z-index: 10;">Toggle Map</button>
+    <script type="module">
+        import { ARButton } from 'https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARButton.js';
+        import { OrbitControls } from 'https://unpkg.com/three@0.126.0/examples/jsm/controls/OrbitControls.js';
 
-  <body>
-    <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
-      <a-marker-camera preset="custom" type="pattern" url="./tags/patt/pattern-tag25h9-2.patt"></a-marker-camera>
-      <a-entity camera position="0 0 5" near="0.1" far="1000"></a-entity> 
-    </a-scene>
+        let camera, scene, renderer, controls;
+        let mapPlane, currentTexture = 'first_floor.png';
 
-    <!-- <div class="ui-container">
-      <div class="ui-button-container">
-        <button class="ui-button" onclick="switchFloor(1)">
-          <img src="./images/icons/map.png" alt="First Floor" class="map-icon" />
-          First Floor
-        </button>
-      </div>
-      <div>
-        <button class="ui-button" onclick="switchFloor(2)">
-          <img src="./images/icons/map.png" alt="Ground Floor" class="map-icon" />
-          Ground Floor
-        </button>
-      </div>
-    </div> -->
-  </body>
-  <button id="toggleMap" style="position: absolute; top: 10px; left: 10px; z-index: 10;">Toggle Map</button>
-  <script type="module">
-      import { OrbitControls } from 'https://unpkg.com/three@0.126.0/examples/jsm/controls/OrbitControls.js';
+        init();
+        animate();
 
-      let camera, scene, renderer, controls;
-      let mapPlane, currentTexture = 'first_floor.png';
+        function init() {
+            const container = document.createElement('div');
+            document.body.appendChild(container);
 
-      init();
-      animate();
+            scene = new THREE.Scene();
 
-      function init() {
-          const container = document.createElement('div');
-          document.body.appendChild(container);
+            // Настройка камеры, чтобы она использовала реальный мир (через WebXR).
+            camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 40);
+            camera.position.set(0, 1.5, 2);
 
-          scene = new THREE.Scene();
-          const arScene = new THREE.Scene();
+            // Настройка рендерера для отображения в AR
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.xr.enabled = true;
+            container.appendChild(renderer.domElement);
 
-          camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 40);
-          camera.position.set(0, 1.5, 2);
-          const arCamera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 40);
+            const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
+            light.position.set(0.5, 1, 0.25);
+            scene.add(light);
 
-          renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-          renderer.setPixelRatio(window.devicePixelRatio);
-          renderer.setSize(window.innerWidth, window.innerHeight);
-          renderer.xr.enabled = true;
-          container.appendChild(renderer.domElement);
+            loadMapTexture(currentTexture);
 
-          const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
-          light.position.set(0.5, 1, 0.25);
-          scene.add(light);
-          arScene.add(light);
+            // Добавление AR кнопки для запуска AR сессии
+            document.body.appendChild(ARButton.createButton(renderer, { requiredFeatures: ['hit-test'] }));
 
-          loadMapTexture(currentTexture);
-          navigator.xr.requestSession('immersive-ar', { requiredFeatures: ['local-floor'] }).then(session => {
-              renderer.xr.setSession(session);
-          });
+            // Настройка OrbitControls для манипуляций с камерой
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.minDistance = 1;
+            controls.maxDistance = 5;
+            controls.target.set(0, 0.8, 0);
+            controls.update();
 
-          controls = new OrbitControls(camera, renderer.domElement);
-          controls.enableDamping = true;
-          controls.minDistance = 1;
-          controls.maxDistance = 5;
-          controls.target.set(0, 0.8, 0);
-          controls.update();
+            document.getElementById('toggleMap').addEventListener('click', toggleMap);
+            window.addEventListener('resize', onWindowResize, false);
+        }
 
-          document.getElementById('toggleMap').addEventListener('click', toggleMap);
-          window.addEventListener('resize', onWindowResize, false);
-      }
+        function loadMapTexture(texturePath) {
+            const textureLoader = new THREE.TextureLoader();
+            textureLoader.load(texturePath, function(texture) {
+                if (mapPlane) {
+                    mapPlane.material.map = texture;
+                    mapPlane.material.needsUpdate = true;
+                } else {
+                    const geometry = new THREE.PlaneGeometry(1.5, 1);
+                    const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+                    mapPlane = new THREE.Mesh(geometry, material);
+                    mapPlane.rotation.x = -Math.PI / 2;
+                    mapPlane.position.set(0, 0.8, -1); // Сдвигаем карту немного перед камерой
+                    scene.add(mapPlane);
+                }
+            });
+        }
 
-      function loadMapTexture(texturePath) {
-          const textureLoader = new THREE.TextureLoader();
-          textureLoader.load(texturePath, function(texture) {
-              if (mapPlane) {
-                  mapPlane.material.map = texture;
-                  mapPlane.material.needsUpdate = true;
-              } else {
-                  const geometry = new THREE.PlaneGeometry(1.5, 1);
-                  const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
-                  mapPlane = new THREE.Mesh(geometry, material);
-                  mapPlane.rotation.x = -Math.PI / 2.5;
-                  mapPlane.position.set(0, 0.8, -1);
-                  scene.add(mapPlane);
-              }
-          });
-      }
+        function toggleMap() {
+            currentTexture = currentTexture === 'first_floor.png' ? 'ground_floor.png' : 'first_floor.png';
+            loadMapTexture(currentTexture);
+        }
 
-      function toggleMap() {
-          currentTexture = currentTexture === 'first_floor.png' ? 'ground_floor.png' : 'first_floor.png';
-          loadMapTexture(currentTexture);
-      }
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
 
-      function onWindowResize() {
-          camera.aspect = window.innerWidth / window.innerHeight;
-          camera.updateProjectionMatrix();
-          renderer.setSize(window.innerWidth, window.innerHeight);
-      }
+        function animate() {
+            renderer.setAnimationLoop(render);
+        }
 
-      function animate() {
-          renderer.setAnimationLoop(render);
-      }
+        function render() {
+            controls.update();
+            renderer.render(scene, camera);
+        }
+    </script>
+</body>
 
-      function render() {
-          controls.update();
-          renderer.render(scene, camera);
-      }
-  </script>
 </html>
