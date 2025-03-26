@@ -16,24 +16,119 @@
 
   <body>
 
+    <!-- object 1 cube -->
     <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" renderer="antialias: true; alpha: true;">
-      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-4.patt">
-          <a-image src="./images/uni_background.jpg" position="0 0 0" width="1" height="1"></a-image>
-      </a-marker>
   
-      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-5.patt">
-        <a-image src="./images/app_logo.png" position="0 0 0" width="1" height="1"></a-image>
+      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-3.patt" id="marker1">
+        <a-box position="0 1 0" rotation="0 0 0" width="2" height="2" depth="2" id="rotating-box">
+          <a-plane position="0 0 1" width="2" height="2" src="#image1" rotation="0 0 0" material="side: double;"></a-plane>
+          <a-plane position="0 0 -1" width="2" height="2" src="#image2" rotation="0 180 0" material="side: double;"></a-plane>
+          <a-plane position="-1 0 0" width="2" height="2" src="#image3" rotation="0 90 0" material="side: double;"></a-plane>
+          <a-plane position="1 0 0" width="2" height="2" src="#image4" rotation="0 -90 0" material="side: double;"></a-plane>
+          <a-plane position="0 1 0" width="2" height="2" src="#image5" rotation="-90 0 0" material="side: double;"></a-plane>
+          <a-plane position="0 -1 0" width="2" height="2" src="#image6" rotation="90 0 0" material="side: double;"></a-plane>
+        </a-box>
+    
+        <a-animation
+          attribute="rotation"
+          to="360 360 360"
+          dur="10000"
+          repeat="indefinite"
+          id="box-rotation">
+        </a-animation>
+    
       </a-marker>
-  
-      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-6.patt">
-        <a-image src="./images/uni_1.jpg" position="0 0 0" width="1" height="1"></a-image>
+    
+      <a-entity camera position="0 1.6 0" fov="90"></a-entity>
+
+      <!--object 2 map-->
+      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-4.patt" id="marker1">
+        <a-entity id="platform" position="0 0 0">
+          <a-ring position="0 0 0" radius-inner="0.7" radius-outer="1" rotation="-90 0 0" color="#3e3e3e" material="shader: flat; metalness: 0.5; roughness: 0.5;"></a-ring>
+          <a-cylinder position="0 0.1 0" radius="0.2" height="0.5" color="#4e4e4e" material="shader: flat; metalness: 0.3; roughness: 0.4;"></a-cylinder>
+          <a-plane position="0 0.3 0" width="2" height="1" rotation="-90 0 0" src="#mapImage" material="shader: flat; opacity: 0.9;"></a-plane>
+          <a-ring position="0 1.5 0" radius-inner="0.7" radius-outer="1" rotation="-90 0 0" color="#4a4a4a" material="shader: flat; metalness: 0.5; roughness: 0.5;"></a-ring>
+          <a-cylinder position="0 1.6 0" radius="0.2" height="0.5" color="#5e5e5e" material="shader: flat; metalness: 0.3; roughness: 0.4;"></a-cylinder>
+          <a-box position="-0.7 2 0" width="0.2" height="0.2" depth="0.1" color="#ff6347" class="button" onclick="switchToLowerFloor()"></a-box>
+          <a-text value="Switch to Lower Floor" position="-0.7 2.2 0" color="#ffffff" align="center"></a-text>
+          <a-box position="0.7 2 0" width="0.2" height="0.2" depth="0.1" color="#4682b4" class="button" onclick="switchToUpperFloor()"></a-box>
+          <a-text value="Switch to Upper Floor" position="0.7 2.2 0" color="#ffffff" align="center"></a-text>
+        </a-entity>
       </a-marker>
-  
-      <a-entity camera position="0 1.6 0" fov="80"></a-entity>
+    
+      <a-entity camera position="0 1.6 0" fov="90"></a-entity>
+    
+      <a-assets>
+        <!-- map-->
+        <img id="mapImage" src="./js/first_floor.png">
+        <!-- cube-->
+        <img id="image1" src="./images/photo1.jpg">
+        <img id="image2" src="./images/photo2.jpg">
+        <img id="image3" src="./images/photo3.jpg">
+        <img id="image4" src="./images/photo4.jpg">
+        <img id="image5" src="./images/photo5.jpg">
+        <img id="image6" src="./images/photo6.jpg">
+      </a-assets>
+    
+      <script>
+        // map
+    const platform = document.querySelector('#platform');
+    const lowerFloor = platform.querySelector('a-ring:nth-child(1)');
+    const upperFloor = platform.querySelector('a-ring:nth-child(2)');
+    
+    function switchToLowerFloor() {
+      upperFloor.setAttribute('visible', 'false');
+      lowerFloor.setAttribute('visible', 'true');
+    }
+    
+    function switchToUpperFloor() {
+      lowerFloor.setAttribute('visible', 'false');
+      upperFloor.setAttribute('visible', 'true');
+    }
+    switchToLowerFloor();
+    
+
+        // cube
+        const rotatingBox = document.querySelector('#rotating-box');
+        const animation = document.querySelector('#box-rotation');
+        
+        let rotationY = 0;
+    
+        function stopRotation(event) {
+          animation.setAttribute('enabled', 'false');
+          const clickedFace = event.target;
+          const rotation = clickedFace.getAttribute('rotation');
+          rotatingBox.setAttribute('rotation', rotation);
+          rotationY = rotation.y;  
+        }
+        const clickableFaces = document.querySelectorAll('.clickable');
+        clickableFaces.forEach(face => {
+          face.addEventListener('click', stopRotation);
+        });
+        function handleSwipe(event) {
+          const swipeDirection = event.detail.direction;
+    
+          if (swipeDirection === 'left') {
+            rotationY += 90;
+          } else if (swipeDirection === 'right') {
+            rotationY -= 90; 
+          }
+          rotatingBox.setAttribute('rotation', { x: 0, y: rotationY, z: 0 });
+        }
+        AFRAME.registerComponent('swipe-listener', {
+          init: function() {
+            this.el.addEventListener('swipe', handleSwipe);
+          }
+        });
+        const marker = document.querySelector('#marker1');
+        marker.setAttribute('swipe-listener', '');
+      </script>
     </a-scene>
+    
+    
 
     <!-- Help menu -->
-    <div class="help-container" id="help-container">
+    <!-- <div class="help-container" id="help-container">
       <div class="front-image-container">
         <img src="./images/app_logo-removebg-preview.png" alt="App Logo" class="app-logo" />
       </div>
@@ -44,7 +139,7 @@
       <div class="back-button-container">
         <button class="back-button" onclick="closeHelpMenu()">Close</button>
       </div>
-    </div>
+    </div> -->
 
 <!-- Popup Section
 <div class="popup" id="popup" style="display: none;">
