@@ -1,101 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/home.ar.css">
+    <link rel="stylesheet" href="./styles/home.button.css">
+    <link rel="stylesheet" href="./styles/home.general.css">
+    <link rel="stylesheet" href="./styles/home.map.css">
+    <link rel="stylesheet" href="./styles/home.help-menu.css">
+    <title>ARbiter</title>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component@1.0.0/dist/aframe-look-at-component.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+  </head>
 
-<head>
-    <title>Basic Scene with WebXR</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <link type="text/css" rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.js" crossorigin="anonymous"></script>
-</head>
+  <body>
 
-<body>
-    <button id="toggleMap" style="position: absolute; top: 10px; left: 10px; z-index: 10;">Toggle Map</button>
-    <script type="module">
-        import { ARButton } from 'https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARButton.js';
-        import { OrbitControls } from 'https://unpkg.com/three@0.126.0/examples/jsm/controls/OrbitControls.js';
+    <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
+      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-4.patt">
+          <a-image src="./images/uni_background.jpg" position="0 0 0" width="1" height="1"></a-image>
+      </a-marker>
+  
+      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-5.patt">
+        <a-image src="./images/app_logo.png" position="0 0 0" width="1" height="1"></a-image>
+      </a-marker>
+  
+      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-6.patt">
+        <a-image src="./images/uni_1.jpg" position="0 0 0" width="1" height="1"></a-image>
+      </a-marker>
+  
+      <a-entity camera></a-entity>
+    </a-scene>
 
-        let camera, scene, renderer, controls;
-        let mapPlane, currentTexture = 'first_floor.png';
+    <!-- Help menu -->
+    <div class="help-container" id="help-container">
+      <div class="front-image-container">
+        <img src="./images/app_logo-removebg-preview.png" alt="App Logo" class="app-logo" />
+      </div>
+      <div class="help-info-container">
+        <h3>Welcome to the App</h3>
+        <p>Here is some helpful information to guide you through the app. You can navigate through the different sections easily and get the best out of the features available!</p>
+      </div>
+      <div class="back-button-container">
+        <button class="back-button" onclick="closeHelpMenu()">Close</button>
+      </div>
+    </div>
 
-        init();
-        animate();
+<!-- Popup Section
+<div class="popup" id="popup" style="display: none;">
+  <div class="popup-content">
+    <h2 id="popup-title">Information</h2>
+    <p id="popup-description">Details about the location...</p>
+    <button onclick="closePopup()">Close</button>
+  </div>
+</div> -->
+<!-- 
+    <div class="popup" id="popup">
+      <h3 id="popup-title"></h3>
+      <p id="popup-description"></p>
+      <button onclick="closePopup()">Close</button>
+    </div> -->
 
-        function init() {
-            const container = document.createElement('div');
-            document.body.appendChild(container);
+    <!-- <script src="./map.js"></script>
+    <script src="./help.js"></script> -->
 
-            scene = new THREE.Scene();
-
-            // Настройка камеры, чтобы она использовала реальный мир (через WebXR).
-            camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 40);
-            camera.position.set(0, 1.5, 2);
-
-            // Настройка рендерера для отображения в AR
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setPixelRatio(window.devicePixelRatio);
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.xr.enabled = true;
-            container.appendChild(renderer.domElement);
-
-            const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
-            light.position.set(0.5, 1, 0.25);
-            scene.add(light);
-
-            loadMapTexture(currentTexture);
-
-            // Добавление AR кнопки для запуска AR сессии
-            document.body.appendChild(ARButton.createButton(renderer, { requiredFeatures: ['hit-test'] }));
-
-            // Настройка OrbitControls для манипуляций с камерой
-            controls = new OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            controls.minDistance = 1;
-            controls.maxDistance = 5;
-            controls.target.set(0, 0.8, 0);
-            controls.update();
-
-            document.getElementById('toggleMap').addEventListener('click', toggleMap);
-            window.addEventListener('resize', onWindowResize, false);
-        }
-
-        function loadMapTexture(texturePath) {
-            const textureLoader = new THREE.TextureLoader();
-            textureLoader.load(texturePath, function(texture) {
-                if (mapPlane) {
-                    mapPlane.material.map = texture;
-                    mapPlane.material.needsUpdate = true;
-                } else {
-                    const geometry = new THREE.PlaneGeometry(1.5, 1);
-                    const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
-                    mapPlane = new THREE.Mesh(geometry, material);
-                    mapPlane.rotation.x = -Math.PI / 2;
-                    mapPlane.position.set(0, 0.8, -1); // Сдвигаем карту немного перед камерой
-                    scene.add(mapPlane);
-                }
-            });
-        }
-
-        function toggleMap() {
-            currentTexture = currentTexture === 'first_floor.png' ? 'ground_floor.png' : 'first_floor.png';
-            loadMapTexture(currentTexture);
-        }
-
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        }
-
-        function animate() {
-            renderer.setAnimationLoop(render);
-        }
-
-        function render() {
-            controls.update();
-            renderer.render(scene, camera);
-        }
-    </script>
-</body>
-
+  </body>
 </html>
