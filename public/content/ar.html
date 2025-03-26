@@ -15,99 +15,77 @@
   </head>
 
   <body>
-
     <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
-      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-4.patt">
-          <a-image src="./images/ar/Library.png" position="0 0 0" width="1" height="1"></a-image>
-      </a-marker>
-  
-      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-5.patt">
-        <a-image src="./images/ar/Cafe.png" position="0 0 0" width="1" height="1"></a-image>
-      </a-marker>
-  
-      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-6.patt">
-        <a-image src="./images/ar/Entrance.png" position="0 0 0" width="1" height="1"></a-image>
-      </a-marker>
-  
-      <a-entity camera></a-entity>
+      <a-marker-camera preset="custom" type="pattern" url="./tags/patt/pattern-tag25h9-2.patt"></a-marker-camera>
+      <a-entity camera position="0 0 5" near="0.1" far="1000"></a-entity> 
     </a-scene>
 
+    <!-- Help menu -->
     <div class="ui-container">
       <div class="ui-button-container">
-        <button class="ui-button" onclick="toggleMap()">
-          <img src="./images/icons/map.png" alt="Map" class="map-icon" />
+        <button class="ui-button" onclick="switchFloor(1)">
+          <img src="./images/icons/map.png" alt="First Floor" class="map-icon" />
+          First Floor
         </button>
       </div>
-      <div class="ui-button-container">
-        <button class="ui-button" onclick="toggleHelpMenu()">
-          <img src="./images/icons/question.png" alt="Help" class="question-icon" />
+      <div>
+        <button class="ui-button" onclick="switchFloor(2)">
+          <img src="./images/icons/map.png" alt="Ground Floor" class="map-icon" />
+          Ground Floor
         </button>
       </div>
     </div>
 
-    <!-- Help menu -->
-    <div class="help-container" id="help-container">
-      <div class="front-image-container">
-        <img src="./images/app_logo-removebg-preview.png" alt="App Logo" class="app-logo" />
-      </div>
-      <div class="help-info-container">
-        <h3>Welcome to the App</h3>
-        <p>Here is some helpful information to guide you through the app. You can navigate through the different sections easily and get the best out of the features available!</p>
-      </div>
-      <div class="back-button-container">
-        <button class="back-button" onclick="closeHelpMenu()">Close</button>
-      </div>
-    </div>
+    <script>
+      var firstFloor = new THREE.TextureLoader();
+      var groundFloor = new THREE.TextureLoader();
+      
+      var firstFloorPlane;
+      var groundFloorPlane;
 
-    <!-- 2D Map Section -->
-<div class="map-container" id="map-container">
-  <!-- First Floor -->
-  <div class="first-floor-container">
-    <img src="./images/gray.jpg" id="map" alt="University Map" />
-    <div class="marker" style="top: 30%; left: 25%;" onclick="openPopup('building1')">🏫</div>
-    <div class="marker" style="top: 50%; left: 60%;" onclick="openPopup('library')">📚</div>
-    <div class="marker" style="top: 20%; left: 80%;" onclick="openPopup('cafeteria')">🍽️</div>
-    <div class="marker" style="top: 70%; left: 40%;" onclick="openPopup('gym')">🏋️‍♂️</div>
-    <div class="marker" style="top: 80%; left: 10%;" onclick="openPopup('office')">🏢</div>
-  </div>
+      firstFloor.load('./js/first_floor.png', function(texture) {
+        var geometry = new THREE.PlaneGeometry(10, 5);
+        var material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+        firstFloorPlane = new THREE.Mesh(geometry, material);
+        firstFloorPlane.position.set(0, 0, 0);
+        firstFloorPlane.scale.set(0.1, 0.1, 0.1);
+        firstFloorPlane.rotation.x = -Math.PI / 2;
+        
+        var marker = document.querySelector('a-marker-camera');
+        if (marker) {
+          marker.object3D.add(firstFloorPlane);
+          console.log('First floor added');
+        } else {
+          console.log('No marker found');
+        }
+      });
 
-  <!-- Second Floor -->
-  <div class="second-floor-container">
-    <img src="./images/gray.jpg" id="map" alt="University Map" />
-    <div class="marker" style="top: 30%; left: 20%;" onclick="openPopup('lecture-hall')">🎓</div>
-    <div class="marker" style="top: 50%; left: 70%;" onclick="openPopup('lab')">🔬</div>
-    <div class="marker" style="top: 60%; left: 40%;" onclick="openPopup('conference-room')">🖥️</div>
-    <div class="marker" style="top: 10%; left: 50%;" onclick="openPopup('study-area')">📖</div>
-    <div class="marker" style="top: 80%; left: 80%;" onclick="openPopup('toilets')">🚻</div>
-  </div>
+      groundFloor.load('./js/ground_floor.png', function(texture) {
+        var geometry = new THREE.PlaneGeometry(10, 5);
+        var material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+        groundFloorPlane = new THREE.Mesh(geometry, material);
+        groundFloorPlane.position.set(0, 0, 0);
+        groundFloorPlane.scale.set(0.1, 0.1, 0.1);
+        groundFloorPlane.rotation.x = -Math.PI / 2;
+        
+        var marker = document.querySelector('a-marker-camera');
+        if (marker) {
+          marker.object3D.add(groundFloorPlane);
+          console.log('Ground floor added');
+        } else {
+          console.log('No marker found');
+        }
+      });
 
-  <!-- Navigation Controls -->
-  <div class="navigation-controls">
-    <button class="back-button" onclick="closeMap()">Back</button>
-    <div class="floor-switch">
-      <button onclick="showFloor(1)">1</button>
-      <button onclick="showFloor(2)">2</button>
-    </div>
-  </div>
-</div>
-
-<!-- Popup Section -->
-<div class="popup" id="popup" style="display: none;">
-  <div class="popup-content">
-    <h2 id="popup-title">Information</h2>
-    <p id="popup-description">Details about the location...</p>
-    <button onclick="closePopup()">Close</button>
-  </div>
-</div>
-
-    <div class="popup" id="popup">
-      <h3 id="popup-title"></h3>
-      <p id="popup-description"></p>
-      <button onclick="closePopup()">Close</button>
-    </div>
-
-    <script src="./map.js"></script>
-    <script src="./help.js"></script>
-
+      function switchFloor(floor) {
+        if (floor === 1) {
+          if (firstFloorPlane) firstFloorPlane.visible = true;
+          if (groundFloorPlane) groundFloorPlane.visible = false;
+        } else if (floor === 2) {
+          if (firstFloorPlane) firstFloorPlane.visible = false;
+          if (groundFloorPlane) groundFloorPlane.visible = true;
+        }
+      }
+    </script>
   </body>
 </html>
