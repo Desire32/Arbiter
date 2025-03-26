@@ -16,7 +16,7 @@
 
   <body>
 
-    <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
+    <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" renderer="antialias: true; alpha: true;">
       <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-4.patt">
           <a-image src="./images/uni_background.jpg" position="0 0 0" width="1" height="1"></a-image>
       </a-marker>
@@ -29,7 +29,7 @@
         <a-image src="./images/uni_1.jpg" position="0 0 0" width="1" height="1"></a-image>
       </a-marker>
   
-      <a-entity camera></a-entity>
+      <a-entity camera position="0 1.6 0" fov="80"></a-entity>
     </a-scene>
 
     <!-- Help menu -->
