@@ -30,7 +30,7 @@
       <a-entity camera position="0 0 5" near="0.1" far="1000"></a-entity> 
     </a-scene>
 
-    <div class="ui-container">
+    <!-- <div class="ui-container">
       <div class="ui-button-container">
         <button class="ui-button" onclick="switchFloor(1)">
           <img src="./images/icons/map.png" alt="First Floor" class="map-icon" />
@@ -43,58 +43,91 @@
           Ground Floor
         </button>
       </div>
-    </div>
+    </div> -->
   </body>
-    <script>
-      var firstFloor = new THREE.TextureLoader();
-      var groundFloor = new THREE.TextureLoader();
-      
-      var firstFloorPlane;
-      var groundFloorPlane;
+  <button id="toggleMap" style="position: absolute; top: 10px; left: 10px; z-index: 10;">Toggle Map</button>
+  <script type="module">
+      import { OrbitControls } from 'https://unpkg.com/three@0.126.0/examples/jsm/controls/OrbitControls.js';
 
-      firstFloor.load('./js/first_floor.png', function(texture) {
-        var geometry = new THREE.PlaneGeometry(10, 5);
-        var material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
-        firstFloorPlane = new THREE.Mesh(geometry, material);
-        firstFloorPlane.position.set(0, 0, 0);
-        firstFloorPlane.scale.set(2.5, 2.5, 2.5);
-        firstFloorPlane.rotation.x = -Math.PI / 2;
-        
-        var marker = document.querySelector('a-marker-camera');
-        if (marker) {
-          marker.object3D.add(firstFloorPlane);
-          console.log('First floor added');
-        } else {
-          console.log('No marker found');
-        }
-      });
+      let camera, scene, renderer, controls;
+      let mapPlane, currentTexture = 'first_floor.png';
 
-      groundFloor.load('./js/ground_floor.png', function(texture) {
-        var geometry = new THREE.PlaneGeometry(10, 5);
-        var material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
-        groundFloorPlane = new THREE.Mesh(geometry, material);
-        groundFloorPlane.position.set(0, 0, 0);
-        groundFloorPlane.scale.set(2.5, 2.5, 2.5);
-        groundFloorPlane.rotation.x = -Math.PI / 2;
-        
-        var marker = document.querySelector('a-marker-camera');
-        if (marker) {
-          marker.object3D.add(groundFloorPlane);
-          console.log('Ground floor added');
-        } else {
-          console.log('No marker found');
-        }
-      });
+      init();
+      animate();
 
-      function switchFloor(floor) {
-        if (floor === 1) {
-          if (firstFloorPlane) firstFloorPlane.visible = true;
-          if (groundFloorPlane) groundFloorPlane.visible = false;
-        } else if (floor === 2) {
-          if (firstFloorPlane) firstFloorPlane.visible = false;
-          if (groundFloorPlane) groundFloorPlane.visible = true;
-        }
+      function init() {
+          const container = document.createElement('div');
+          document.body.appendChild(container);
+
+          scene = new THREE.Scene();
+          const arScene = new THREE.Scene();
+
+          camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 40);
+          camera.position.set(0, 1.5, 2);
+          const arCamera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 40);
+
+          renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+          renderer.setPixelRatio(window.devicePixelRatio);
+          renderer.setSize(window.innerWidth, window.innerHeight);
+          renderer.xr.enabled = true;
+          container.appendChild(renderer.domElement);
+
+          const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
+          light.position.set(0.5, 1, 0.25);
+          scene.add(light);
+          arScene.add(light);
+
+          loadMapTexture(currentTexture);
+          navigator.xr.requestSession('immersive-ar', { requiredFeatures: ['local-floor'] }).then(session => {
+              renderer.xr.setSession(session);
+          });
+
+          controls = new OrbitControls(camera, renderer.domElement);
+          controls.enableDamping = true;
+          controls.minDistance = 1;
+          controls.maxDistance = 5;
+          controls.target.set(0, 0.8, 0);
+          controls.update();
+
+          document.getElementById('toggleMap').addEventListener('click', toggleMap);
+          window.addEventListener('resize', onWindowResize, false);
       }
 
-    </script>
+      function loadMapTexture(texturePath) {
+          const textureLoader = new THREE.TextureLoader();
+          textureLoader.load(texturePath, function(texture) {
+              if (mapPlane) {
+                  mapPlane.material.map = texture;
+                  mapPlane.material.needsUpdate = true;
+              } else {
+                  const geometry = new THREE.PlaneGeometry(1.5, 1);
+                  const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+                  mapPlane = new THREE.Mesh(geometry, material);
+                  mapPlane.rotation.x = -Math.PI / 2.5;
+                  mapPlane.position.set(0, 0.8, -1);
+                  scene.add(mapPlane);
+              }
+          });
+      }
+
+      function toggleMap() {
+          currentTexture = currentTexture === 'first_floor.png' ? 'ground_floor.png' : 'first_floor.png';
+          loadMapTexture(currentTexture);
+      }
+
+      function onWindowResize() {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+
+      function animate() {
+          renderer.setAnimationLoop(render);
+      }
+
+      function render() {
+          controls.update();
+          renderer.render(scene, camera);
+      }
+  </script>
 </html>
