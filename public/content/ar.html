@@ -12,6 +12,9 @@
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-look-at-component@1.0.0/dist/aframe-look-at-component.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
+    <script src="https://raw.githack.com/fcor/arjs-gestures/master/dist/gestures.js"></script>
+    <script type="module" src="cube.js"></script> 
   </head>
 
 
@@ -32,9 +35,14 @@
       </div>
 
 
-    <a-scene
-        embedded
-        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
+      <a-scene
+      arjs
+      embedded
+      renderer="logarithmicDepthBuffer: true;"
+      vr-mode-ui="enabled: false"
+      gesture-detector
+      id="scene"
+    >
 
       <!-- object 1 entrance cube -->
       <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-5.patt" id="entrance">
@@ -109,7 +117,9 @@
       </a-marker>
 
       <!-- object 4 cafe -->
-      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-10.patt" id="cafe">
+      <a-marker type="pattern" raycaster="objects: .clickable"
+      emitevents="true"
+      cursor="fuse: false; rayOrigin: mouse;" url="./tags/patt/pattern-tag25h9-10.patt" id="cafe">
         <a-box position="0 1 0" rotation="0 0 0" width="0.5" height="0.5" depth="0.5" id="rotating-box">
 <a-plane position="-1 0 0" width="2" height="2" src="#cafe3" rotation="0 90 0" material="side: double;" class="clickable"></a-plane>
 <a-plane position="1 0 0" width="2" height="2" src="#cafe4" rotation="0 -90 0" material="side: double;" class="clickable"></a-plane>
@@ -120,14 +130,6 @@
 <a-plane position="0 0 -1" width="2" height="2" rotation="0 180 0" material="side: double; color: #5B56B7;" class="clickable"></a-plane>
 <a-plane position="0 -1 0" width="2" height="2" rotation="90 0 0" material="side: double; color: #5B56B7;" class="clickable"></a-plane>
         </a-box>
-    
-        <a-animation
-          attribute="rotation"
-          to="360 360 360"
-          dur="10000"
-          repeat="indefinite"
-          id="box-rotation">
-        </a-animation>
     
       </a-marker>
     
@@ -173,6 +175,7 @@
     </a-scene>
     
 <script>
+
 // init
 const markerObjects = new Map();
 window.THREE = AFRAME.THREE;
@@ -238,7 +241,6 @@ entrance.addEventListener('markerFound', () => updateRobotPosition({x: 0, y: 0.1
 const mapMarker = document.querySelector('#marker-map');
 const mapMarkerGround = document.querySelector('#marker-map-ground');
 mapMarkerGround.addEventListener('markerFound', () => checkAndShowRobot(mapMarkerGround));
-mapMarker.addEventListener('markerFound', () => checkAndShowRobot(mapMarker));
-</script>
+mapMarker.addEventListener('markerFound', () => checkAndShowRobot(mapMarker));</script>
 </body>
 </html>

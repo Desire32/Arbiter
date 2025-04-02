@@ -1,34 +1,79 @@
-// cube
-const rotatingBox = document.querySelector('#rotating-box');
-const animation = document.querySelector('#box-rotation');
+import * as THREE from 'three';
 
-let rotationY = 0;
+function main() {
+  const studentSupport = document.querySelector('#ssupport');
+  document.body.appendChild(studentSupport);
+  const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
+  renderer.setSize(window.innerWidth, window.innerHeight);
 
-function stopRotation(event) {
-animation.parentNode.removeChild(animation); 
-const clickedFace = event.target;
-const rotation = clickedFace.getAttribute('rotation');
-rotatingBox.setAttribute('rotation', `0 ${rotation.y} 0`);
-rotationY = rotation.y;
-}
-const clickableFaces = document.querySelectorAll('.clickable');
-clickableFaces.forEach(face => {
-face.addEventListener('click', stopRotation);
-});
-function handleSwipe(event) {
-  const swipeDirection = event.detail.direction;
+  const fov = 75;
+  const aspect = window.innerWidth / window.innerHeight;
+  const near = 0.1;
+  const far = 5;
+  const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+  camera.position.z = 2;
 
-  if (swipeDirection === 'left') {
-    rotationY += 90;
-  } else if (swipeDirection === 'right') {
-    rotationY -= 90; 
+  const scene = new THREE.Scene();
+
+  const materials = [
+    new THREE.MeshBasicMaterial({ color: 0xff0000 }), // red
+    new THREE.MeshBasicMaterial({ color: 0x00ff00 }), // green
+    new THREE.MeshBasicMaterial({ color: 0x0000ff }), // light blue
+    new THREE.MeshBasicMaterial({ color: 0xffff00 }), // yellow
+    new THREE.MeshBasicMaterial({ color: 0xff00ff }), // purple
+    new THREE.MeshBasicMaterial({ color: 0x00ffff }), // blue
+  ];
+
+  const geometry = new THREE.BoxGeometry(1, 1, 1);
+  const cube = new THREE.Mesh(geometry, materials);
+  scene.add(cube);
+
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
+
+  let isRotating = true;
+
+  function onClick(event) {
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObject(cube);
+    if (intersects.length > 0) {
+      isRotating = !isRotating;
+
+      if (!isRotating) {
+        const intersection = intersects[0];
+        const normal = intersection.face.normal;
+
+        if (normal.x === 1) {
+          cube.rotation.set(0, Math.PI / 2, 0);
+        } else if (normal.x === -1) {
+          cube.rotation.set(0, -Math.PI / 2, 0);
+        } else if (normal.y === 1) {
+          cube.rotation.set(Math.PI / 2, 0, 0);
+        } else if (normal.y === -1) {
+          cube.rotation.set(-Math.PI / 2, 0, 0);
+        } else if (normal.z === 1) {
+          cube.rotation.set(0, 0, 0);
+        } else if (normal.z === -1) {
+          cube.rotation.set(Math.PI, 0, 0);
+        }
+      }
+    }
   }
-  rotatingBox.setAttribute('rotation', { x: 0, y: rotationY, z: 0 });
-}
-AFRAME.registerComponent('swipe-listener', {
-  init: function() {
-    this.el.addEventListener('swipe', handleSwipe);
+
+  window.addEventListener('click', onClick);
+
+  function render(time) {
+    time *= 0.001;
+    if (isRotating) {
+      cube.rotation.y = time;
+    }
+
+    renderer.render(scene, camera);
+    requestAnimationFrame(render);
   }
-});
-const marker = document.querySelector('#marker1');
-marker.setAttribute('swipe-listener', '');
+  requestAnimationFrame(render);
+}
+
+main();
