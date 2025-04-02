@@ -56,8 +56,10 @@
 
 
       <!-- object 2 student support -->
-      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-6.patt" id="ssupport">
-        <a-box position="0 1 0" rotation="0 0 0" width="0.5" height="0.5" depth="0.5" id="rotating-box">
+      <a-marker type="pattern" raycaster="objects: .clickable"
+      emitevents="true"
+      cursor="fuse: false; rayOrigin: mouse;" url="./tags/patt/pattern-tag25h9-6.patt" id="ssupport">
+        <a-box position="0 1 0" rotation="0 0 0" width="0.5" height="0.5" depth="0.5" id="rotating-box" gesture-handler>
 <a-plane position="-1 0 0" width="2" height="2" src="#stud3" rotation="0 90 0" material="side: double;" class="clickable"></a-plane>
 <a-plane position="1 0 0" width="2" height="2" src="#stud4" rotation="0 -90 0" material="side: double;" class="clickable"></a-plane>
 <a-plane position="0 1 0" width="2" height="2" src="#stud5" rotation="-90 0 0" material="side: double;" class="clickable"></a-plane>
@@ -71,8 +73,10 @@
       </a-marker>
 
       <!-- object 3 library -->
-      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-3.patt" id="library">
-        <a-box position="0 1 0" rotation="0 0 0" width="0.5" height="0.5" depth="0.5" id="rotating-box">
+      <a-marker type="pattern" raycaster="objects: .clickable"
+      emitevents="true"
+      cursor="fuse: false; rayOrigin: mouse;" url="./tags/patt/pattern-tag25h9-3.patt" id="library">
+        <a-box position="0 1 0" rotation="0 0 0" width="0.5" height="0.5" depth="0.5" id="rotating-box" gesture-handler>
 <a-plane position="-1 0 0" width="2" height="2" src="#lib3" rotation="0 90 0" material="side: double;" class="clickable"></a-plane>
 <a-plane position="1 0 0" width="2" height="2" src="#lib4" rotation="0 90 0" material="side: double;" class="clickable"></a-plane>
 <a-plane position="0 1 0" width="2" height="2" src="#lib5" rotation="-90 0 0" material="side: double;" class="clickable"></a-plane>
@@ -89,7 +93,7 @@
       <a-marker type="pattern" raycaster="objects: .clickable"
       emitevents="true"
       cursor="fuse: false; rayOrigin: mouse;" url="./tags/patt/pattern-tag25h9-10.patt" id="cafe">
-        <a-box position="0 1 0" rotation="0 0 0" width="0.5" height="0.5" depth="0.5" id="rotating-box">
+        <a-box position="0 1 0" rotation="0 0 0" width="0.25" height="0.25" depth="0.5" id="rotating-box" gesture-handler>
 <a-plane position="-1 0 0" width="2" height="2" src="#cafe3" rotation="0 90 0" material="side: double;" class="clickable"></a-plane>
 <a-plane position="1 0 0" width="2" height="2" src="#cafe4" rotation="0 -90 0" material="side: double;" class="clickable"></a-plane>
 <a-plane position="0 1 0" width="2" height="2" src="#cafe5" rotation="-90 0 0" material="side: double;" class="clickable"></a-plane>
