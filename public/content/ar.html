@@ -93,7 +93,7 @@
       <a-marker type="pattern" raycaster="objects: .clickable"
       emitevents="true"
       cursor="fuse: false; rayOrigin: mouse;" url="./tags/patt/pattern-tag25h9-10.patt" id="cafe">
-      <a-box position="0 1 0" rotation="0 0 0" scale="0.1 0.1 0.1" id="rotating-box" gesture-handler></a-box>
+        <a-box position="0 1 0" rotation="0 0 0" width="0.01" height="0.01" depth="0.5" id="rotating-box" gesture-handler>
 <a-plane position="-1 0 0" width="2" height="2" src="#cafe3" rotation="0 90 0" material="side: double;" class="clickable"></a-plane>
 <a-plane position="1 0 0" width="2" height="2" src="#cafe4" rotation="0 -90 0" material="side: double;" class="clickable"></a-plane>
 <a-plane position="0 1 0" width="2" height="2" src="#cafe5" rotation="-90 0 0" material="side: double;" class="clickable"></a-plane>
@@ -108,16 +108,20 @@
       <a-entity camera></a-entity>
 
      <!--Map (first floor)-->
-<a-marker type="pattern" url="./tags/patt/pattern-tag25h9-4.patt" id="marker-map">
-  <a-entity id="platform" position="0 0 0">
+<a-marker type="pattern" raycaster="objects: .clickable"
+emitevents="true"
+cursor="fuse: false; rayOrigin: mouse;" url="./tags/patt/pattern-tag25h9-4.patt" id="marker-map">
+  <a-entity id="platform" position="0 0 0" gesture-handler>
     <a-plane position="0 0 0" width="5" height="5" rotation="-90 0 0" src="#firstFloor" material="shader: flat; opacity: 0.9;">
     </a-plane>
   </a-entity>
 </a-marker>
 
 <!--Map (ground floor)-->
-<a-marker type="pattern" url="./tags/patt/pattern-tag25h9-8.patt" id="marker-map-ground">
-  <a-entity id="platform" position="0 0 0">
+<a-marker type="pattern" raycaster="objects: .clickable"
+emitevents="true"
+cursor="fuse: false; rayOrigin: mouse;" url="./tags/patt/pattern-tag25h9-8.patt" id="marker-map-ground">
+  <a-entity id="platform" position="0 0 0" gesture-handler>
     <a-plane position="0 0 0" width="5" height="5" rotation="-90 0 0" src="#groundFloor" material="shader: flat; opacity: 0.9;">
     </a-plane>
   </a-entity>
