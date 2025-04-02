@@ -17,11 +17,19 @@
 
   <style>
     a-scene {
-  position: absolute !important;
+        position: absolute !important;
     } 
   </style>
 
   <body>
+
+    <div class="ui-container">
+      <div class="ui-button-container">
+        <button class="ui-button">
+          <img src="../static/images/icons/menu.png" alt="Menu" class="menu-icon" />
+        </button>
+      </div>
+      </div>
 
 
     <a-scene
@@ -29,7 +37,7 @@
         arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
 
       <!-- object 1 entrance cube -->
-      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-5.patt" id="marker1">
+      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-5.patt" id="entrance">
         <a-box position="0 1 0" rotation="0 0 0" width="0.5" height="0.5" depth="0.5" id="rotating-box">
 
           <!-- right positions-->
@@ -55,7 +63,7 @@
 
 
       <!-- object 2 student support -->
-      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-6.patt" id="marker1">
+      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-6.patt" id="ssupport">
         <a-box position="0 1 0" rotation="0 0 0" width="0.5" height="0.5" depth="0.5" id="rotating-box">
 <a-plane position="-1 0 0" width="2" height="2" src="#stud3" rotation="0 90 0" material="side: double;" class="clickable"></a-plane>
 <a-plane position="1 0 0" width="2" height="2" src="#stud4" rotation="0 -90 0" material="side: double;" class="clickable"></a-plane>
@@ -78,7 +86,7 @@
       </a-marker>
 
       <!-- object 3 library -->
-      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-3.patt" id="marker1">
+      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-3.patt" id="library">
         <a-box position="0 1 0" rotation="0 0 0" width="0.5" height="0.5" depth="0.5" id="rotating-box">
 <a-plane position="-1 0 0" width="2" height="2" src="#lib3" rotation="0 90 0" material="side: double;" class="clickable"></a-plane>
 <a-plane position="1 0 0" width="2" height="2" src="#lib4" rotation="0 90 0" material="side: double;" class="clickable"></a-plane>
@@ -101,7 +109,7 @@
       </a-marker>
 
       <!-- object 4 cafe -->
-      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-10.patt" id="marker1">
+      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-10.patt" id="cafe">
         <a-box position="0 1 0" rotation="0 0 0" width="0.5" height="0.5" depth="0.5" id="rotating-box">
 <a-plane position="-1 0 0" width="2" height="2" src="#cafe3" rotation="0 90 0" material="side: double;" class="clickable"></a-plane>
 <a-plane position="1 0 0" width="2" height="2" src="#cafe4" rotation="0 -90 0" material="side: double;" class="clickable"></a-plane>
@@ -125,25 +133,26 @@
     
       <a-entity camera></a-entity>
 
- 
-      <!-- Карта -->
-      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-4.patt" id="marker-map">
-        <a-entity id="platform" position="0 0 0">
-          <a-plane position="0 1 0" width="2" height="1" rotation="-90 0 0" src="#mapImage" material="shader: flat; opacity: 0.9;"></a-plane>
-          
-          <!-- Кнопка "Lower Floor" -->
-          <a-box position="-0.6 1.6 0" width="0.3" height="0.15" depth="0.1" color="#ff6347" class="button" onclick="switchToLowerFloor()"></a-box>
-          <a-text value="Lower Floor" position="-0.6 1.75 0" color="#ffffff" align="center" scale="0.5 0.5 0.5"></a-text>
-          
-          <!-- Кнопка "Upper Floor" -->
-          <a-box position="0.6 1.6 0" width="0.3" height="0.15" depth="0.1" color="#4682b4" class="button" onclick="switchToUpperFloor()"></a-box>
-          <a-text value="Upper Floor" position="0.6 1.75 0" color="#ffffff" align="center" scale="0.5 0.5 0.5"></a-text>
-        </a-entity>
-      </a-marker>
-      
-      <a-assets>
+     <!--Map (first floor)-->
+<a-marker type="pattern" url="./tags/patt/pattern-tag25h9-4.patt" id="marker-map">
+  <a-entity id="platform" position="0 0 0">
+    <a-plane position="0 0 0" width="5" height="5" rotation="-90 0 0" src="#firstFloor" material="shader: flat; opacity: 0.9;">
+    </a-plane>
+  </a-entity>
+</a-marker>
+
+<!--Map (ground floor)-->
+<a-marker type="pattern" url="./tags/patt/pattern-tag25h9-8.patt" id="marker-map-ground">
+  <a-entity id="platform" position="0 0 0">
+    <a-plane position="0 0 0" width="5" height="5" rotation="-90 0 0" src="#groundFloor" material="shader: flat; opacity: 0.9;">
+    </a-plane>
+  </a-entity>
+</a-marker>
+
+<a-assets>
         <!-- map-->
-        <img id="mapImage" src="../static/first_floor.png">
+        <img id="firstFloor" src="../static/first_floor.png">
+        <img id="groundFloor" src="../static/ground_floor.png">
         <!--entrance-->
         <img id="entrance3" src="./tags/pos_photos/entrance/entrance_desc.png">
         <img id="entrance4" src="./tags/pos_photos/entrance/entrance_direct.png">
@@ -160,60 +169,61 @@
         <img id="cafe3" src="./tags/pos_photos/cafe/cafe_description.png">
         <img id="cafe4" src="./tags/pos_photos/cafe/cafe_directions.png">
         <img id="cafe5" src="./tags/pos_photos/cafe/cafe.png">
-      </a-assets>
-    
-      <script>
-        // map
-    const platform = document.querySelector('#platform');
-    const lowerFloor = platform.querySelector('a-ring:nth-child(1)');
-    const upperFloor = platform.querySelector('a-ring:nth-child(2)');
-    
-    function switchToLowerFloor() {
-      upperFloor.setAttribute('visible', 'false');
-      lowerFloor.setAttribute('visible', 'true');
-    }
-    
-    function switchToUpperFloor() {
-      lowerFloor.setAttribute('visible', 'false');
-      upperFloor.setAttribute('visible', 'true');
-    }
-    switchToLowerFloor();
-
-        // cube
-        const rotatingBox = document.querySelector('#rotating-box');
-        const animation = document.querySelector('#box-rotation');
-        
-        let rotationY = 0;
-    
-        function stopRotation(event) {
-  animation.parentNode.removeChild(animation); 
-  const clickedFace = event.target;
-  const rotation = clickedFace.getAttribute('rotation');
-  rotatingBox.setAttribute('rotation', `0 ${rotation.y} 0`);
-  rotationY = rotation.y;
-        }
-        const clickableFaces = document.querySelectorAll('.clickable');
-clickableFaces.forEach(face => {
-  face.addEventListener('click', stopRotation);
-});
-        function handleSwipe(event) {
-          const swipeDirection = event.detail.direction;
-    
-          if (swipeDirection === 'left') {
-            rotationY += 90;
-          } else if (swipeDirection === 'right') {
-            rotationY -= 90; 
-          }
-          rotatingBox.setAttribute('rotation', { x: 0, y: rotationY, z: 0 });
-        }
-        AFRAME.registerComponent('swipe-listener', {
-          init: function() {
-            this.el.addEventListener('swipe', handleSwipe);
-          }
-        });
-        const marker = document.querySelector('#marker1');
-        marker.setAttribute('swipe-listener', '');
-      </script>
+</a-assets>
     </a-scene>
-  </body>
+    
+<script>
+// init
+const markerObjects = new Map();
+window.THREE = AFRAME.THREE;
+
+// doms variables
+const studentSupport = document.querySelector('#ssupport');
+const cafe = document.querySelector('#cafe');
+const library = document.querySelector('#library');
+const entrance = document.querySelector('#entrance');
+
+
+let robotPosition = {x: 0, y: 0.1, z: 0};
+
+function updateRobotPosition(newPosition) {
+    robotPosition = newPosition;
+    console.log(`Moved to: x=${robotPosition.x}, y=${robotPosition.y}, z=${robotPosition.z}`);
+}
+
+function showRobotOnMap(marker) {
+    console.log('marker map found');
+    const objects = markerObjects.get(marker) || {};
+    if (objects.pip) {
+        marker.object3D.remove(objects.pip);
+    }
+    
+    const mtlLoader = new THREE.MTLLoader();
+    mtlLoader.load('../static/models/Robot_Holo_5.mtl', function(materials) {
+        materials.preload();
+        const objLoader = new THREE.OBJLoader();
+        objLoader.setMaterials(materials);
+        objLoader.load('../static/models/Robot_Holo_5.obj', function(object) {
+            object.scale.set(0.005, 0.005, 0.005);
+            object.position.set(robotPosition.x, robotPosition.y, robotPosition.z);
+            marker.object3D.add(object);
+            objects.pip = object;
+            markerObjects.set(marker, objects);
+            console.log(`Robot pos: x=${robotPosition.x}, y=${robotPosition.y}, z=${robotPosition.z}`);
+        });
+    });
+}
+
+studentSupport.addEventListener('markerFound', () => updateRobotPosition({x: -1.5, y: 0.1, z: 2}));
+cafe.addEventListener('markerFound', () => updateRobotPosition({x: 2, y: 0.1, z: 1}));
+library.addEventListener('markerFound', () => updateRobotPosition({x: 0, y: 0.1, z: 0}));
+entrance.addEventListener('markerFound', () => updateRobotPosition({x: 8, y: 0.1, z: 0}));
+
+// different maps
+const mapMarker = document.querySelector('#marker-map');
+const mapMarkerGround = document.querySelector('#marker-map-ground');
+mapMarkerGround.addEventListener('markerFound', () => showRobotOnMap(mapMarkerGround));
+mapMarker.addEventListener('markerFound', () => showRobotOnMap(mapMarker));
+</script>
+</body>
 </html>
