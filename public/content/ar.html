@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <link rel="stylesheet" href="./styles/home.ar.css">
     <link rel="stylesheet" href="./styles/home.button.css">
     <link rel="stylesheet" href="./styles/home.general.css">
@@ -12,17 +12,8 @@
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-look-at-component@1.0.0/dist/aframe-look-at-component.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
-    <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
     <script src="https://raw.githack.com/fcor/arjs-gestures/master/dist/gestures.js"></script>
-    <script type="module" src="cube.js"></script> 
   </head>
-
-
-  <style>
-    a-scene {
-        position: absolute !important;
-    } 
-  </style>
 
   <body>
 
@@ -45,8 +36,10 @@
     >
 
       <!-- object 1 entrance cube -->
-      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-5.patt" id="entrance">
-        <a-box position="0 1 0" rotation="0 0 0" width="0.5" height="0.5" depth="0.5" id="rotating-box">
+      <a-marker type="pattern" raycaster="objects: .clickable"
+      emitevents="true"
+      cursor="fuse: false; rayOrigin: mouse;" url="./tags/patt/pattern-tag25h9-5.patt" id="entrance">
+        <a-box position="0 1 0" rotation="0 0 0" width="0.5" height="0.5" depth="0.5" id="rotating-box" gesture-handler>
 
           <!-- right positions-->
           <a-plane position="-1 0 0" width="2" height="2" src="#entrance3" rotation="0 90 0" material="side: double;" class="clickable"></a-plane> <!-- needed-->
@@ -58,14 +51,6 @@
           <a-plane position="0 0 -1" width="2" height="2" rotation="0 180 0" material="side: double; color: #5B56B7;" class="clickable"></a-plane>
           <a-plane position="0 -1 0" width="2" height="2" rotation="90 0 0" material="side: double; color: #5B56B7;" class="clickable"></a-plane>
         </a-box>
-    
-        <a-animation
-          attribute="rotation"
-          to="360 360 360"
-          dur="10000"
-          repeat="indefinite"
-          id="box-rotation">
-        </a-animation>
     
       </a-marker>
 
@@ -82,15 +67,7 @@
 <a-plane position="0 0 -1" width="2" height="2" rotation="0 180 0" material="side: double; color: #5B56B7;" class="clickable"></a-plane>
 <a-plane position="0 -1 0" width="2" height="2" rotation="90 0 0" material="side: double; color: #5B56B7;" class="clickable"></a-plane>
         </a-box>
-    
-        <a-animation
-          attribute="rotation"
-          to="360 360 360"
-          dur="10000"
-          repeat="indefinite"
-          id="box-rotation">
-        </a-animation>
-    
+  
       </a-marker>
 
       <!-- object 3 library -->
@@ -105,14 +82,6 @@
 <a-plane position="0 0 -1" width="2" height="2" rotation="0 180 0" material="side: double; color: #5B56B7;" class="clickable"></a-plane>
 <a-plane position="0 -1 0" width="2" height="2" rotation="90 0 0" material="side: double; color: #5B56B7;" class="clickable"></a-plane>
         </a-box>
-    
-        <a-animation
-          attribute="rotation"
-          to="360 360 360"
-          dur="10000"
-          repeat="indefinite"
-          id="box-rotation">
-        </a-animation>
     
       </a-marker>
 
