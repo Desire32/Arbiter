@@ -14,21 +14,103 @@
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
   </head>
 
+
+  <style>
+    a-scene {
+  position: absolute !important;
+    } 
+  </style>
+
   <body>
 
-    <!-- object 1 cube -->
+
     <a-scene
         embedded
         arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
-  
+
+      <!-- object 1 entrance cube -->
+      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-5.patt" id="marker1">
+        <a-box position="0 1 0" rotation="0 0 0" width="0.5" height="0.5" depth="0.5" id="rotating-box">
+
+          <!-- right positions-->
+          <a-plane position="-1 0 0" width="2" height="2" src="#entrance3" rotation="0 90 0" material="side: double;" class="clickable"></a-plane> <!-- needed-->
+          <a-plane position="1 0 0" width="2" height="2" src="#entrance4" rotation="0 -90 0" material="side: double;" class="clickable"></a-plane> <!-- needed-->
+          <a-plane position="0 1 0" width="2" height="2" src="#entrance5" rotation="-90 0 0" material="side: double;" class="clickable"></a-plane> <!-- needed-->
+
+          <!-- plain sides-->
+          <a-plane position="0 0 1" width="2" height="2" rotation="0 0 0" material="side: double; color: #5B56B7;" class="clickable"></a-plane>
+          <a-plane position="0 0 -1" width="2" height="2" rotation="0 180 0" material="side: double; color: #5B56B7;" class="clickable"></a-plane>
+          <a-plane position="0 -1 0" width="2" height="2" rotation="90 0 0" material="side: double; color: #5B56B7;" class="clickable"></a-plane>
+        </a-box>
+    
+        <a-animation
+          attribute="rotation"
+          to="360 360 360"
+          dur="10000"
+          repeat="indefinite"
+          id="box-rotation">
+        </a-animation>
+    
+      </a-marker>
+
+
+      <!-- object 2 student support -->
+      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-6.patt" id="marker1">
+        <a-box position="0 1 0" rotation="0 0 0" width="0.5" height="0.5" depth="0.5" id="rotating-box">
+<a-plane position="-1 0 0" width="2" height="2" src="#stud3" rotation="0 90 0" material="side: double;" class="clickable"></a-plane>
+<a-plane position="1 0 0" width="2" height="2" src="#stud4" rotation="0 -90 0" material="side: double;" class="clickable"></a-plane>
+<a-plane position="0 1 0" width="2" height="2" src="#stud5" rotation="-90 0 0" material="side: double;" class="clickable"></a-plane>
+
+<!-- plain sides-->
+<a-plane position="0 0 1" width="2" height="2" rotation="0 0 0" material="side: double; color: #5B56B7;" class="clickable"></a-plane>
+<a-plane position="0 0 -1" width="2" height="2" rotation="0 180 0" material="side: double; color: #5B56B7;" class="clickable"></a-plane>
+<a-plane position="0 -1 0" width="2" height="2" rotation="90 0 0" material="side: double; color: #5B56B7;" class="clickable"></a-plane>
+        </a-box>
+    
+        <a-animation
+          attribute="rotation"
+          to="360 360 360"
+          dur="10000"
+          repeat="indefinite"
+          id="box-rotation">
+        </a-animation>
+    
+      </a-marker>
+
+      <!-- object 3 library -->
       <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-3.patt" id="marker1">
-        <a-box position="0 1 0" rotation="0 0 0" width="2" height="2" depth="2" id="rotating-box">
-          <a-plane position="0 0 1" width="2" height="2" src="#image1" rotation="0 0 0" material="side: double;"></a-plane>
-          <a-plane position="0 0 -1" width="2" height="2" src="#image2" rotation="0 180 0" material="side: double;"></a-plane>
-          <a-plane position="-1 0 0" width="2" height="2" src="#image3" rotation="0 90 0" material="side: double;"></a-plane>
-          <a-plane position="1 0 0" width="2" height="2" src="#image4" rotation="0 -90 0" material="side: double;"></a-plane>
-          <a-plane position="0 1 0" width="2" height="2" src="#image5" rotation="-90 0 0" material="side: double;"></a-plane>
-          <a-plane position="0 -1 0" width="2" height="2" src="#image6" rotation="90 0 0" material="side: double;"></a-plane>
+        <a-box position="0 1 0" rotation="0 0 0" width="0.5" height="0.5" depth="0.5" id="rotating-box">
+<a-plane position="-1 0 0" width="2" height="2" src="#lib3" rotation="0 90 0" material="side: double;" class="clickable"></a-plane>
+<a-plane position="1 0 0" width="2" height="2" src="#lib4" rotation="0 90 0" material="side: double;" class="clickable"></a-plane>
+<a-plane position="0 1 0" width="2" height="2" src="#lib5" rotation="-90 0 0" material="side: double;" class="clickable"></a-plane>
+
+<!-- plain sides-->
+<a-plane position="0 0 1" width="2" height="2" rotation="0 0 0" material="side: double; color: #5B56B7;" class="clickable"></a-plane>
+<a-plane position="0 0 -1" width="2" height="2" rotation="0 180 0" material="side: double; color: #5B56B7;" class="clickable"></a-plane>
+<a-plane position="0 -1 0" width="2" height="2" rotation="90 0 0" material="side: double; color: #5B56B7;" class="clickable"></a-plane>
+        </a-box>
+    
+        <a-animation
+          attribute="rotation"
+          to="360 360 360"
+          dur="10000"
+          repeat="indefinite"
+          id="box-rotation">
+        </a-animation>
+    
+      </a-marker>
+
+      <!-- object 4 cafe -->
+      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-10.patt" id="marker1">
+        <a-box position="0 1 0" rotation="0 0 0" width="0.5" height="0.5" depth="0.5" id="rotating-box">
+<a-plane position="-1 0 0" width="2" height="2" src="#cafe3" rotation="0 90 0" material="side: double;" class="clickable"></a-plane>
+<a-plane position="1 0 0" width="2" height="2" src="#cafe4" rotation="0 -90 0" material="side: double;" class="clickable"></a-plane>
+<a-plane position="0 1 0" width="2" height="2" src="#cafe5" rotation="-90 0 0" material="side: double;" class="clickable"></a-plane>
+
+<!-- plain sides-->
+<a-plane position="0 0 1" width="2" height="2" rotation="0 0 0" material="side: double; color: #5B56B7;" class="clickable"></a-plane>
+<a-plane position="0 0 -1" width="2" height="2" rotation="0 180 0" material="side: double; color: #5B56B7;" class="clickable"></a-plane>
+<a-plane position="0 -1 0" width="2" height="2" rotation="90 0 0" material="side: double; color: #5B56B7;" class="clickable"></a-plane>
         </a-box>
     
         <a-animation
@@ -43,30 +125,41 @@
     
       <a-entity camera></a-entity>
 
-      <!--object 2 map-->
-      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-4.patt" id="marker1">
+ 
+      <!-- Карта -->
+      <a-marker type="pattern" url="./tags/patt/pattern-tag25h9-4.patt" id="marker-map">
         <a-entity id="platform" position="0 0 0">
-          <a-ring position="0 0 0" radius-inner="0.7" radius-outer="1" rotation="-90 0 0" color="#3e3e3e" material="shader: flat; metalness: 0.5; roughness: 0.5;"></a-ring>
-          <a-cylinder position="0 0.1 0" radius="0.2" height="0.5" color="#4e4e4e" material="shader: flat; metalness: 0.3; roughness: 0.4;"></a-cylinder>
-          <a-plane position="0 0.3 0" width="2" height="1" rotation="-90 0 0" src="#mapImage" material="shader: flat; opacity: 0.9;"></a-plane>
-          <a-ring position="0 1.5 0" radius-inner="0.7" radius-outer="1" rotation="-90 0 0" color="#4a4a4a" material="shader: flat; metalness: 0.5; roughness: 0.5;"></a-ring>
-          <a-cylinder position="0 1.6 0" radius="0.2" height="0.5" color="#5e5e5e" material="shader: flat; metalness: 0.3; roughness: 0.4;"></a-cylinder>
-          <a-box position="-0.7 2 0" width="0.2" height="0.2" depth="0.1" color="#ff6347" class="button" onclick="switchToLowerFloor()"></a-box>
-          <a-text value="Switch to Lower Floor" position="-0.7 2.2 0" color="#ffffff" align="center"></a-text>
-          <a-box position="0.7 2 0" width="0.2" height="0.2" depth="0.1" color="#4682b4" class="button" onclick="switchToUpperFloor()"></a-box>
-          <a-text value="Switch to Upper Floor" position="0.7 2.2 0" color="#ffffff" align="center"></a-text>
+          <a-plane position="0 1 0" width="2" height="1" rotation="-90 0 0" src="#mapImage" material="shader: flat; opacity: 0.9;"></a-plane>
+          
+          <!-- Кнопка "Lower Floor" -->
+          <a-box position="-0.6 1.6 0" width="0.3" height="0.15" depth="0.1" color="#ff6347" class="button" onclick="switchToLowerFloor()"></a-box>
+          <a-text value="Lower Floor" position="-0.6 1.75 0" color="#ffffff" align="center" scale="0.5 0.5 0.5"></a-text>
+          
+          <!-- Кнопка "Upper Floor" -->
+          <a-box position="0.6 1.6 0" width="0.3" height="0.15" depth="0.1" color="#4682b4" class="button" onclick="switchToUpperFloor()"></a-box>
+          <a-text value="Upper Floor" position="0.6 1.75 0" color="#ffffff" align="center" scale="0.5 0.5 0.5"></a-text>
         </a-entity>
       </a-marker>
+      
       <a-assets>
         <!-- map-->
         <img id="mapImage" src="../static/first_floor.png">
-        <!-- cube-->
-        <img id="image1" src="./images/photo1.jpg">
-        <img id="image2" src="./images/photo2.jpg">
-        <img id="image3" src="./images/photo3.jpg">
-        <img id="image4" src="./images/photo4.jpg">
-        <img id="image5" src="./images/photo5.jpg">
-        <img id="image6" src="./images/photo6.jpg">
+        <!--entrance-->
+        <img id="entrance3" src="./tags/pos_photos/entrance/entrance_desc.png">
+        <img id="entrance4" src="./tags/pos_photos/entrance/entrance_direct.png">
+        <img id="entrance5" src="./tags/pos_photos/entrance/entrance.png">
+        <!--stud support-->
+        <img id="stud3" src="./tags/pos_photos/student_support/stud_desc.png">
+        <img id="stud4" src="./tags/pos_photos/student_support/stud_dir.png">
+        <img id="stud5" src="./tags/pos_photos/student_support/student_support.png">
+        <!--library-->
+        <img id="lib3" src="./tags/pos_photos/library/lib_desc.png">
+        <img id="lib4" src="./tags/pos_photos/library/lib_dir.png">
+        <img id="lib5" src="./tags/pos_photos/library/library.png">
+        <!--cafe-->
+        <img id="cafe3" src="./tags/pos_photos/cafe/cafe_description.png">
+        <img id="cafe4" src="./tags/pos_photos/cafe/cafe_directions.png">
+        <img id="cafe5" src="./tags/pos_photos/cafe/cafe.png">
       </a-assets>
     
       <script>
@@ -85,7 +178,6 @@
       upperFloor.setAttribute('visible', 'true');
     }
     switchToLowerFloor();
-    
 
         // cube
         const rotatingBox = document.querySelector('#rotating-box');
@@ -94,16 +186,16 @@
         let rotationY = 0;
     
         function stopRotation(event) {
-          animation.setAttribute('enabled', 'false');
-          const clickedFace = event.target;
-          const rotation = clickedFace.getAttribute('rotation');
-          rotatingBox.setAttribute('rotation', rotation);
-          rotationY = rotation.y;  
+  animation.parentNode.removeChild(animation); 
+  const clickedFace = event.target;
+  const rotation = clickedFace.getAttribute('rotation');
+  rotatingBox.setAttribute('rotation', `0 ${rotation.y} 0`);
+  rotationY = rotation.y;
         }
         const clickableFaces = document.querySelectorAll('.clickable');
-        clickableFaces.forEach(face => {
-          face.addEventListener('click', stopRotation);
-        });
+clickableFaces.forEach(face => {
+  face.addEventListener('click', stopRotation);
+});
         function handleSwipe(event) {
           const swipeDirection = event.detail.direction;
     
@@ -123,40 +215,5 @@
         marker.setAttribute('swipe-listener', '');
       </script>
     </a-scene>
-    
-    
-
-    <!-- Help menu -->
-    <!-- <div class="help-container" id="help-container">
-      <div class="front-image-container">
-        <img src="./images/app_logo-removebg-preview.png" alt="App Logo" class="app-logo" />
-      </div>
-      <div class="help-info-container">
-        <h3>Welcome to the App</h3>
-        <p>Here is some helpful information to guide you through the app. You can navigate through the different sections easily and get the best out of the features available!</p>
-      </div>
-      <div class="back-button-container">
-        <button class="back-button" onclick="closeHelpMenu()">Close</button>
-      </div>
-    </div> -->
-
-<!-- Popup Section
-<div class="popup" id="popup" style="display: none;">
-  <div class="popup-content">
-    <h2 id="popup-title">Information</h2>
-    <p id="popup-description">Details about the location...</p>
-    <button onclick="closePopup()">Close</button>
-  </div>
-</div> -->
-<!-- 
-    <div class="popup" id="popup">
-      <h3 id="popup-title"></h3>
-      <p id="popup-description"></p>
-      <button onclick="closePopup()">Close</button>
-    </div> -->
-
-    <!-- <script src="./map.js"></script>
-    <script src="./help.js"></script> -->
-
   </body>
 </html>
