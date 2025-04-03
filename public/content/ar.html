@@ -137,137 +137,172 @@ cursor="fuse: false; rayOrigin: mouse;" url="./tags/patt/pattern-tag25h9-8.patt"
 </a-assets>
     </a-scene>
     
-<script>
-// init
-const markerObjects = new Map();
-window.THREE = AFRAME.THREE;
-
-// doms variables
-const studentSupport = document.querySelector('#ssupport');
-const cafe = document.querySelector('#cafe');
-const library = document.querySelector('#library');
-const entrance = document.querySelector('#entrance');
-
-
-let robotPosition = {x: 0, y: 100, z: 0};
-
-function updateRobotPosition(newPosition) {
-  if (robotPosition.x === newPosition.x && robotPosition.y === newPosition.y && robotPosition.z === newPosition.z) {
-        console.log("Same marker, no update needed.");
-        return;
-    }
-    robotPosition = newPosition;
-    console.log(`Moved to: x=${robotPosition.x}, y=${robotPosition.y}, z=${robotPosition.z}`);
-
-    let notification = document.getElementById('notification');
-    notification.classList.add('show');
-
-    setTimeout(() => {
-        notification.classList.remove('show');
-    }, 3000);
-}
-
-function showRobotOnMap(marker) {
-    console.log('marker map found');
-    const objects = markerObjects.get(marker) || {};
-
-    if (marker && marker.object3D && objects.pip) {
-        marker.object3D.remove(objects.pip);
-        objects.pip.traverse(child => {
-            if (child.isMesh) {
-                if (child.geometry) child.geometry.dispose();
-                if (child.material) {
-                    if (Array.isArray(child.material)) {
-                        child.material.forEach(mat => {
-                            if (mat.map) mat.map.dispose();
-                            mat.dispose();
-                        });
-                    } else {
-                        if (child.material.map) child.material.map.dispose();
-                        child.material.dispose();
-                        
-                    }
-                }
-                console.log("obj deleted")
+    <script>
+      // ResourceTracker class
+      class ResourceTracker {
+        constructor() {
+          this.resources = new Set();
+        }
+  
+        track(resource) {
+          if (!resource) return resource;
+  
+          if (resource.dispose || resource instanceof THREE.Object3D) {
+            this.resources.add(resource);
+          }
+          if (resource instanceof THREE.Object3D) {
+            this.track(resource.geometry);
+            this.track(resource.material);
+            this.track(resource.children);
+          } else if (resource instanceof THREE.Material) {
+            for (const value of Object.values(resource)) {
+              if (value instanceof THREE.Texture) {
+                this.track(value);
+              }
             }
-        });
+            if (resource.uniforms) {
+              for (const value of Object.values(resource.uniforms)) {
+                if (value && (value.value instanceof THREE.Texture || Array.isArray(value.value))) {
+                  this.track(value.value);
+                }
+              }
+            }
+          }
+  
+          return resource;
+        }
+  
+        dispose() {
+          for (const resource of this.resources) {
+            if (resource.dispose) {
+              resource.dispose();
+            }
+            if (resource instanceof THREE.Object3D && resource.parent) {
+              resource.parent.remove(resource);
+            }
+          }
+          this.resources.clear();
+        }
+      }
+  
+      // Initialize variables
+      const markerObjects = new Map();
+      const studentSupport = document.querySelector('#ssupport');
+      const cafe = document.querySelector('#cafe');
+      const library = document.querySelector('#library');
+      const entrance = document.querySelector('#entrance');
+  
+      const STUDENT_SUPPORT_POSITION = { x: -0.5, y: 0.1, z: 0.5 };
+      const CAFE_POSITION = { x: -1.5, y: 0.1, z: 0 };
+      const LIBRARY_POSITION = { x: -2.1, y: 0.1, z: 0.5 };
+      const ENTRANCE_POSITION = { x: 0, y: 0.1, z: 1.4 };
+  
+      let robotPosition = {x: 0, y: 0.1, z: 0};
+  
+      function updateRobotPosition(newPosition) {
+        if (robotPosition.x === newPosition.x && robotPosition.y === newPosition.y && robotPosition.z === newPosition.z) {
+          console.log("Same marker, no update needed.");
+          return;
+        }
+        robotPosition = newPosition;
+        console.log(`Moved to: x=${robotPosition.x}, y=${robotPosition.y}, z=${robotPosition.z}`);
+  
+        let notification = document.getElementById('notification');
+        notification.classList.add('show');
+  
+        setTimeout(() => {
+          notification.classList.remove('show');
+        }, 3000);
       }
 
-    const mtlLoader = new THREE.MTLLoader();
-    mtlLoader.load('../static/models/Robot_Holo_5.mtl', function(materials) {
-        materials.preload();
-        const objLoader = new THREE.OBJLoader();
-        objLoader.setMaterials(materials);
-        objLoader.load('../static/models/Robot_Holo_5.obj', function(object) {
+      const resTracker = new ResourceTracker();
+        const track = resTracker.track.bind(resTracker);
+  
+      function showRobotOnMap(marker, position) {
+        const objects = markerObjects.get(marker.id) || {};
+        
+        // Remove previous robot and free resources
+        if (objects.pip && objects.pip !== 'loading' && objects.pip !== 'error') {
+          marker.object3D.remove(objects.pip);
+          resTracker.dispose(); // Free resources
+          objects.pip.traverse(child => {
+            if (child.isMesh) {
+              if (child.geometry) child.geometry.dispose();
+              if (child.material) child.material.dispose();
+            }
+          });
+          console.log(`${marker.id}: Pip removed.`);
+        }
+        markerObjects.delete(marker.id);
+  
+        const mtlLoader = new THREE.MTLLoader();
+        mtlLoader.load('../static/models/Robot_Holo_5.mtl', function(materials) {
+          materials.preload();
+          const objLoader = new THREE.OBJLoader();
+          objLoader.setMaterials(materials);
+          objLoader.load('../static/models/Robot_Holo_5.obj', function(object) {
             object.scale.set(0.005, 0.005, 0.005);
-            object.position.set(robotPosition.x, robotPosition.y, robotPosition.z);
+            object.position.set(position.x, position.y, position.z);
             marker.object3D.add(object);
+  
+            // Track all resources used by the robot
+            track(object);
+            track(object.material);
+            track(object.geometry);
+  
             objects.pip = object;
-            markerObjects.set(marker, objects);
-            console.log(`Robot pos: x=${robotPosition.x}, y=${robotPosition.y}, z=${robotPosition.z}`);
-
+            markerObjects.set(marker.id, objects);
+            console.log(`Robot pos: x=${position.x}, y=${position.y}, z=${position.z}`);
+  
             animateRobotPulse(object);
+          });
         });
-    });
-}
-
-function animateRobotPulse(robot) {
-    let scaleUp = true;
-
-    robot.traverse((child) => {
-        if (child.isMesh) {
+      }
+  
+      function animateRobotPulse(robot) {
+        let scaleUp = true;
+  
+        robot.traverse((child) => {
+          if (child.isMesh) {
             child.material.color.set(0x007BFF); 
             child.material.emissive.set(0x007BFF);
             child.material.emissiveIntensity = 0.5;
-        }
-    });
-
-    function pulse() {
-        if (scaleUp) {
+          }
+        });
+  
+        function pulse() {
+          if (scaleUp) {
             robot.scale.set(0.006, 0.006, 0.006);
-        } else {
+          } else {
             robot.scale.set(0.004, 0.004, 0.004);
+          }
+          scaleUp = !scaleUp;
+          setTimeout(() => requestAnimationFrame(pulse), 500);
         }
-        scaleUp = !scaleUp;
-        setTimeout(() => requestAnimationFrame(pulse), 500);
-    }
+  
+        pulse();
+      }
+  
+      // Event listeners
+      studentSupport.addEventListener('markerFound', () => {
+        showRobotOnMap(mapMarker, STUDENT_SUPPORT_POSITION);
+      });
+      cafe.addEventListener('markerFound', () => {
+        showRobotOnMap(mapMarkerGround, CAFE_POSITION);
+      });
+      library.addEventListener('markerFound', () => {
+        showRobotOnMap(mapMarker, LIBRARY_POSITION);
+      });
+      entrance.addEventListener('markerFound', () => {
+        showRobotOnMap(mapMarkerGround, ENTRANCE_POSITION);
+      });
+  
+      // Map markers
+      const mapMarker = document.querySelector('#marker-map');
+      const mapMarkerGround = document.querySelector('#marker-map-ground');
+    </script>
 
-    pulse();
-}
 
-function checkAndShowRobot(marker) {
-  const positionElement = document.getElementById('lastPosition');
-    if (robotPosition.x === -0.5 && robotPosition.z === 0.5 ||  // studentSupport
-        robotPosition.x === -2.1 && robotPosition.z === 0.5) {  // library
-        showRobotOnMap(mapMarker, "Upper Floor");
-    } 
-    else if (robotPosition.x === -1.5 && robotPosition.z === 0 || // cafe
-             robotPosition.x === 0 && robotPosition.z === 1.4) { // entrance
-        showRobotOnMap(mapMarkerGround, "Ground Floor");
-    }
-}
-
-// ssuport coord done
-studentSupport.addEventListener('markerFound', () => updateRobotPosition({x: -0.5, y: 0.1, z: 0.5}));
-// cafe coord done
-cafe.addEventListener('markerFound', () => updateRobotPosition({x: -1.5, y: 0.1, z: 0}));
-// library coord done 
-library.addEventListener('markerFound', () => updateRobotPosition({x: -2.1, y: 0.1, z: 0.5}));
-//entrance coord done
-entrance.addEventListener('markerFound', () => updateRobotPosition({x: 0, y: 0.1, z: 1.4}));
-
-// different maps
-const mapMarker = document.querySelector('#marker-map');
-const mapMarkerGround = document.querySelector('#marker-map-ground');
-
-mapMarkerGround.addEventListener('markerFound', () => {
-    checkAndShowRobot(mapMarkerGround);
-});
-
-mapMarker.addEventListener('markerFound', () => {
-    checkAndShowRobot(mapMarker);
-});
-
-</script>
+        
 </body>
 </html>
