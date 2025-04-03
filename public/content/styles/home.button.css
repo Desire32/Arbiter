@@ -1,10 +1,11 @@
 .ui-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    z-index: 10000;
+    position: absolute;
+    top: 20px;
+    right: 20px;
 }
 
 .ui-button {
