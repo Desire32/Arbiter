@@ -191,35 +191,19 @@ cursor="fuse: false; rayOrigin: mouse;" url="./tags/patt/pattern-tag25h9-8.patt"
       const cafe = document.querySelector('#cafe');
       const library = document.querySelector('#library');
       const entrance = document.querySelector('#entrance');
-  
+
       const STUDENT_SUPPORT_POSITION = { x: -0.5, y: 0.1, z: 0.5 };
       const CAFE_POSITION = { x: -1.5, y: 0.1, z: 0 };
       const LIBRARY_POSITION = { x: -2.1, y: 0.1, z: 0.5 };
       const ENTRANCE_POSITION = { x: 0, y: 0.1, z: 1.4 };
   
       let robotPosition = {x: 0, y: 0.1, z: 0};
-  
-      function updateRobotPosition(newPosition) {
-        if (robotPosition.x === newPosition.x && robotPosition.y === newPosition.y && robotPosition.z === newPosition.z) {
-          console.log("Same marker, no update needed.");
-          return;
-        }
-        robotPosition = newPosition;
-        console.log(`Moved to: x=${robotPosition.x}, y=${robotPosition.y}, z=${robotPosition.z}`);
-  
-        let notification = document.getElementById('notification');
-        notification.classList.add('show');
-  
-        setTimeout(() => {
-          notification.classList.remove('show');
-        }, 3000);
-      }
 
       const resTracker = new ResourceTracker();
-        const track = resTracker.track.bind(resTracker);
+      const track = resTracker.track.bind(resTracker);
   
       function showRobotOnMap(marker, position) {
-        const objects = markerObjects.get(marker.id) || {};
+      const objects = markerObjects.get(marker.id) || {};
         
         // Remove previous robot and free resources
         if (objects.pip && objects.pip !== 'loading' && objects.pip !== 'error') {
@@ -300,6 +284,7 @@ cursor="fuse: false; rayOrigin: mouse;" url="./tags/patt/pattern-tag25h9-8.patt"
       // Map markers
       const mapMarker = document.querySelector('#marker-map');
       const mapMarkerGround = document.querySelector('#marker-map-ground');
+
     </script>
 
 
