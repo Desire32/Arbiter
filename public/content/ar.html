@@ -16,9 +16,6 @@
 
   <body>
     <div class="notification" id="notification">Your position has been updated!</div>
-
-    <div class="position-widget" id="positionWidget">
-      Your location is being shown on the map.</div>
     <div class="ui-container">
       <div class="ui-button-container">
         <button class="ui-button" onclick="window.location.href = '/page'">
@@ -152,9 +149,13 @@ const library = document.querySelector('#library');
 const entrance = document.querySelector('#entrance');
 
 
-let robotPosition = {x: 0, y: 0.1, z: 0};
+let robotPosition = {x: 0, y: 100, z: 0};
 
-function updateRobotPosition(newPosition) {
+function updateRobotPosition(newPosition, floor) {
+  if (robotPosition.x === newPosition.x && robotPosition.y === newPosition.y && robotPosition.z === newPosition.z) {
+        console.log("Same marker, no update needed.");
+        return;
+    }
     robotPosition = newPosition;
     console.log(`Moved to: x=${robotPosition.x}, y=${robotPosition.y}, z=${robotPosition.z}`);
 
@@ -242,24 +243,12 @@ entrance.addEventListener('markerFound', () => updateRobotPosition({x: 0, y: 0.1
 const mapMarker = document.querySelector('#marker-map');
 const mapMarkerGround = document.querySelector('#marker-map-ground');
 
-// map pos widget
-function showPositionWidget() {
-    const widget = document.getElementById('positionWidget');
-    widget.style.display = 'block';
-
-    setTimeout(() => {
-        widget.style.display = 'none';
-    }, 3000);
-}
-
 mapMarkerGround.addEventListener('markerFound', () => {
     checkAndShowRobot(mapMarkerGround);
-    showPositionWidget();
 });
 
 mapMarker.addEventListener('markerFound', () => {
     checkAndShowRobot(mapMarker);
-    showPositionWidget(); 
 });
 
 </script>
