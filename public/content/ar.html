@@ -18,13 +18,13 @@
     <div class="notification" id="notification">Your position has been updated!</div>
     <div class="ui-container">
       <div class="ui-button-container">
-        <button class="ui-button" onclick="window.location.href = '/page'">
-            <img src="../static/images/icons/home_icon.jpg" alt="Home" class="home-icon">
-        </button>
+        <button class="ui-button" onclick="window.location.href = 'https://nextjs-boilerplate-one-blush-14.vercel.app/'">
+          <img src="../static/images/icons/home_icon.jpg" alt="Home" class="home-icon">
+      </button>      
     </div>
       </div>
 
-      <a-scene arjs embedded renderer="logarithmicDepthBuffer: true;" vr-mode-ui="enabled: false" gesture-detector id="scene">
+      <a-scene arjs embedded renderer="logarithmicDepthBuffer: true;" xr-mode-ui="enabled: false" gesture-detector id="scene">
 
       <!-- object 1 entrance cube -->
       <a-marker type="pattern" raycaster="objects: .clickable"
@@ -266,18 +266,30 @@ cursor="fuse: false; rayOrigin: mouse;" url="./tags/patt/pattern-tag25h9-8.patt"
   
         pulse();
       }
+      function widgetUpdate() {
+  let notification = document.getElementById('notification');
+  notification.classList.add('show');
+
+  setTimeout(() => {
+    notification.classList.remove('show');
+  }, 3000);
+}
   
       // Event listeners
       studentSupport.addEventListener('markerFound', () => {
+        widgetUpdate();
         showRobotOnMap(mapMarker, STUDENT_SUPPORT_POSITION);
       });
       cafe.addEventListener('markerFound', () => {
+        widgetUpdate();
         showRobotOnMap(mapMarkerGround, CAFE_POSITION);
       });
       library.addEventListener('markerFound', () => {
+        widgetUpdate();
         showRobotOnMap(mapMarker, LIBRARY_POSITION);
       });
       entrance.addEventListener('markerFound', () => {
+        widgetUpdate();
         showRobotOnMap(mapMarkerGround, ENTRANCE_POSITION);
       });
   
