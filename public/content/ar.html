@@ -19,9 +19,9 @@
     <div class="ui-container">
       <div class="ui-button-container">
         <button class="ui-button" onclick="window.location.href = '/page'">
-          <img src="/static/images/icons/home_icon.jpg" alt="Home" className="home-icon" />
-        </button>        
-      </div>
+            <img src="../static/images/icons/home_icon.jpg" alt="Home" class="home-icon">
+        </button>
+    </div>
       </div>
 
       <a-scene arjs embedded renderer="logarithmicDepthBuffer: true;" vr-mode-ui="enabled: false" gesture-detector id="scene">
@@ -151,7 +151,7 @@ const entrance = document.querySelector('#entrance');
 
 let robotPosition = {x: 0, y: 100, z: 0};
 
-function updateRobotPosition(newPosition, floor) {
+function updateRobotPosition(newPosition) {
   if (robotPosition.x === newPosition.x && robotPosition.y === newPosition.y && robotPosition.z === newPosition.z) {
         console.log("Same marker, no update needed.");
         return;
@@ -167,14 +167,32 @@ function updateRobotPosition(newPosition, floor) {
     }, 3000);
 }
 
-
 function showRobotOnMap(marker) {
     console.log('marker map found');
     const objects = markerObjects.get(marker) || {};
-    if (objects.pip) {
+
+    if (marker && marker.object3D && objects.pip) {
         marker.object3D.remove(objects.pip);
-    }
-    
+        objects.pip.traverse(child => {
+            if (child.isMesh) {
+                if (child.geometry) child.geometry.dispose();
+                if (child.material) {
+                    if (Array.isArray(child.material)) {
+                        child.material.forEach(mat => {
+                            if (mat.map) mat.map.dispose();
+                            mat.dispose();
+                        });
+                    } else {
+                        if (child.material.map) child.material.map.dispose();
+                        child.material.dispose();
+                        
+                    }
+                }
+                console.log("obj deleted")
+            }
+        });
+      }
+
     const mtlLoader = new THREE.MTLLoader();
     mtlLoader.load('../static/models/Robot_Holo_5.mtl', function(materials) {
         materials.preload();
@@ -189,7 +207,6 @@ function showRobotOnMap(marker) {
             console.log(`Robot pos: x=${robotPosition.x}, y=${robotPosition.y}, z=${robotPosition.z}`);
 
             animateRobotPulse(object);
-            styleRobotAppearance(object);
         });
     });
 }

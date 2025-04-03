@@ -7,39 +7,9 @@
     padding: 15px 25px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    font-size: 16px;
+    font-size: 10px;
     transition: transform 0.5s ease-in-out;
 }
 .show {
     transform: translateX(330px);
 }
-
-#positionWidget {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 24px;
-    font-weight: bold;
-    display: none;
-    z-index: 9999;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    animation: slideIn 0.5s ease-out;
-}
-
-/* Анимация появления */
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateX(-50%) translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
-    }
-}
-
