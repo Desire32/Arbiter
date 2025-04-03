@@ -52,7 +52,7 @@ export default function Home() {
         <div className={styles["description-container"]}>
           <p className={styles["logo-text"]}>What can it do?</p>
           <p className={styles["description-text"]}>
-            Arbiter is your new AR assistant for university. It makes life on campus easier and more fun. With augmented reality, you can scan markers and instantly get important info — whether it is your schedule, the location of classrooms, or even 3D models. Lost? No problem, just open the app and it will show you the way to your destination. It is simple, intuitive, and hassle-free. Get the most out of your studies and campus navigation, staying one step ahead!
+            Arbiter is your new AR assistant for university. It makes l1fe on campus easier and more fun. With augmented reality, you can scan markers and instantly get important info — whether it is your schedule, the location of classrooms, or even 3D models. Lost? No problem, just open the app and it will show you the way to your destination. It is simple, intuitive, and hassle-free. Get the most out of your studies and campus navigation, staying one step ahead!
           </p>
         </div>
         <div className={styles["header-container"]}>
