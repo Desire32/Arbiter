@@ -10,12 +10,13 @@ ARbiter is an interactive AR application combining a robot assistant and augment
 
 (?) University Unity model (file is too big for gitHub) - https://mega.nz/folder/hJUmWb4I#h0_qvwcZdoZddiznL5nRxQ
 
+Figma Link: https://www.figma.com/design/y3XsRPLLIhiDEqdYcGkO56/Stuff?node-id=198-2&p=f&t=qZo3PmEacYuFU4TS-0
+
+App link: https://nextjs-boilerplate-one-blush-14.vercel.app
 
 ## How to launch
 
 Production (Click and play!)
-
-https://nextjs-boilerplate-one-blush-14.vercel.app
 
 Local:
 ```bash
@@ -29,11 +30,11 @@ bun dev
 ```
 
 ## Authors
-| Name          | Role                                      |
-|-------------------|----------------------------------------------|
-| Nikita Markov | Team Lead |
-| Sergey Parenkov   | CI/CD Tester |
-| Maxim Zharkov     | Graphical Designer |
+| Role        | Name            | GitHub      |
+| ----------- |-----------------|-------------|
+| Team Lead   | Nikita Markov     | @Desire32   | 
+| Software Tester| Sergei Parenkov   | @sparenkov | 
+| Graphical Design | Maxim Zharkov   | @maxxzharkoff | 
 
 ## Our stack
 - ar.js
