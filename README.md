@@ -12,11 +12,12 @@ ARbiter is an interactive AR application combining a robot assistant and augment
 
 Figma Link: https://www.figma.com/design/y3XsRPLLIhiDEqdYcGkO56/Stuff?node-id=198-2&p=f&t=qZo3PmEacYuFU4TS-0
 
-App link: https://nextjs-boilerplate-one-blush-14.vercel.app
+Github link project: https://github.com/Desire32/Arbiter/
 
 ## How to launch
 
 Production (Click and play!)
+https://nextjs-boilerplate-one-blush-14.vercel.app
 
 Local:
 ```bash
